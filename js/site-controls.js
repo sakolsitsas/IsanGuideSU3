@@ -1,27 +1,44 @@
 const themeToggle = document.getElementById("themeToggle");
 
-function updateThemeButton() {
-  const isDark = document.body.classList.contains("dark-mode");
+function getStoredTheme() {
+  try {
+    return window.localStorage.getItem("theme") === "dark";
+  } catch (error) {
+    return false;
+  }
+}
 
+function setStoredTheme(isDark) {
+  try {
+    window.localStorage.setItem("theme", isDark ? "dark" : "light");
+  } catch (error) {
+    // Ignore storage failures in restricted browser contexts.
+  }
+}
+
+function updateThemeButton() {
+  if (!themeToggle) return;
+
+  const isDark = document.body.classList.contains("dark-mode");
   themeToggle.textContent = isDark ? " มืดมองไม่เห็น" : " แสบตาไม่ไหว";
 }
 
 // โหลดค่าที่บันทึกไว้
-if (localStorage.getItem("theme") === "dark") {
+if (getStoredTheme()) {
   document.body.classList.add("dark-mode");
 }
 
 updateThemeButton();
 
-themeToggle.addEventListener("click", () => {
-  document.body.classList.toggle("dark-mode");
+if (themeToggle) {
+  themeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
 
-  const isDark = document.body.classList.contains("dark-mode");
-
-  localStorage.setItem("theme", isDark ? "dark" : "light");
-
-  updateThemeButton();
-});
+    const isDark = document.body.classList.contains("dark-mode");
+    setStoredTheme(isDark);
+    updateThemeButton();
+  });
+}
 
 const itineraryToggle = document.getElementById("itineraryToggle");
 const itineraryContent = document.getElementById("itineraryContent");
@@ -39,32 +56,36 @@ if (itineraryToggle && itineraryContent) {
 const targetDate = new Date("2026-12-05T06:00:00+07:00").getTime();
 
 function updateCountdown() {
+  const dayEl = document.getElementById("cdDays");
+  const hourEl = document.getElementById("cdHours");
+  const minuteEl = document.getElementById("cdMinutes");
+  const secondEl = document.getElementById("cdSeconds");
+  const messageEl = document.getElementById("countdownMessage");
+
+  if (!dayEl || !hourEl || !minuteEl || !secondEl || !messageEl) {
+    return;
+  }
+
   const now = Date.now();
   const distance = targetDate - now;
 
   if (distance <= 0) {
-    document.getElementById("cdDays").textContent = "00";
-    document.getElementById("cdHours").textContent = "00";
-    document.getElementById("cdMinutes").textContent = "00";
-    document.getElementById("cdSeconds").textContent = "00";
-    document.getElementById("countdownMessage").textContent =
-      "🎉 ถึงเวลาออกเดินทางแล้ว!";
+    dayEl.textContent = "00";
+    hourEl.textContent = "00";
+    minuteEl.textContent = "00";
+    secondEl.textContent = "00";
+    messageEl.textContent = "🎉 ถึงเวลาออกเดินทางแล้ว!";
     return;
   }
 
-  document.getElementById("cdDays").textContent = String(
-    Math.floor(distance / 86400000),
-  ).padStart(2, "0");
-
-  document.getElementById("cdHours").textContent = String(
+  dayEl.textContent = String(Math.floor(distance / 86400000)).padStart(2, "0");
+  hourEl.textContent = String(
     Math.floor((distance % 86400000) / 3600000),
   ).padStart(2, "0");
-
-  document.getElementById("cdMinutes").textContent = String(
+  minuteEl.textContent = String(
     Math.floor((distance % 3600000) / 60000),
   ).padStart(2, "0");
-
-  document.getElementById("cdSeconds").textContent = String(
+  secondEl.textContent = String(
     Math.floor((distance % 60000) / 1000),
   ).padStart(2, "0");
 }
@@ -97,7 +118,11 @@ if (slideshow) {
   function startSlideshow() {
     clearInterval(timer);
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const mediaQuery = window.matchMedia
+      ? window.matchMedia("(prefers-reduced-motion: reduce)")
+      : null;
+
+    if (mediaQuery && mediaQuery.matches) {
       return;
     }
 

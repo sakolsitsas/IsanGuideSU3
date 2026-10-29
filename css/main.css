@@ -540,10 +540,82 @@ body {
     color 0.2s;
 }
 
+.site-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin: 24px auto 0;
+  padding: 14px 18px;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+}
+
+.site-stat {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.site-stat-icon {
+  font-size: 17px;
+}
+
+.site-stat-live {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #22a06b;
+  box-shadow: 0 0 0 3px color-mix(in srgb, #22a06b 18%, transparent);
+}
+
+.site-stat-label {
+  font-size: 13px;
+}
+
+.site-stat-value {
+  color: var(--ink);
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+
+.site-stats-divider {
+  width: 1px;
+  height: 24px;
+  background: var(--line);
+}
+
+.site-stats-status {
+  flex-basis: 100%;
+  margin-top: -12px;
+  text-align: center;
+  font-size: 11px;
+}
+
 main {
   width: min(100%, 960px);
   margin: 0 auto;
   padding: 18px 16px 40px;
+}
+
+@media (max-width: 480px) {
+  .site-stats {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .site-stat {
+    gap: 6px;
+  }
+
+  .site-stat-label {
+    font-size: 12px;
+  }
 }
 
 header {

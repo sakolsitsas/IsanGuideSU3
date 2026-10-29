@@ -485,12 +485,30 @@
         <p class="secret-disclaimer">รายละเอียดจะเปิดเผยเมื่อถึงเวลาเท่านั้น</p>
       </section>
 
+      <footer class="site-stats" aria-label="สถิติผู้เข้าชม">
+        <div class="site-stat">
+          <span class="site-stat-icon" aria-hidden="true">👣</span>
+          <span class="site-stat-label">เข้าชมทั้งหมด</span>
+          <strong id="siteVisitCount" class="site-stat-value">—</strong>
+        </div>
+        <span class="site-stats-divider" aria-hidden="true"></span>
+        <div class="site-stat">
+          <span class="site-stat-icon site-stat-live" aria-hidden="true"></span>
+          <span class="site-stat-label">กำลังใช้งาน</span>
+          <strong id="siteActiveCount" class="site-stat-value">—</strong>
+        </div>
+        <span id="siteStatsStatus" class="site-stats-status" aria-live="polite">
+          กำลังโหลดสถิติ...
+        </span>
+      </footer>
+
       <script src="./js/secret-activities.js"></script>
     </main>
 
     <script src="./js/site-controls.js" type="module"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="./js/message-board.js" type="module"></script>
+    <script src="./js/visitor-stats.js" type="module"></script>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 

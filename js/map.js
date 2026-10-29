@@ -392,7 +392,7 @@
 
   // เผื่อเว็บมีปุ่มเปลี่ยนธีม ให้แผนที่ปรับขนาดหลังเปลี่ยนธีม
   const section = document.getElementById("isan-map-section");
-  if (section) {
+  if (section && typeof ResizeObserver !== "undefined") {
     const observer = new ResizeObserver(() => map.invalidateSize());
     observer.observe(section);
   }

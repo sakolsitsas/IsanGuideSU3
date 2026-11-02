@@ -103,12 +103,12 @@
     } catch (error) {
       console.error(`โหลดสภาพอากาศ${location}ไม่สำเร็จ`, error);
       forecastRows.forEach((row) => {
-        row.querySelector(".trip-weather-icon").textContent = "⚠️";
+        row.querySelector(".trip-weather-icon").textContent = "⌛";
         row.querySelector(".trip-weather-condition").textContent =
-          "โหลดข้อมูลไม่สำเร็จ";
+          "ยังไม่มีข้อมูล";
         row.querySelector(".trip-weather-temperature").textContent = "—";
         row.querySelector(".trip-weather-rain").textContent =
-          "ตรวจสอบอินเทอร์เน็ตแล้วลองอีกครั้ง";
+          "รอข้อมูลพยากรณ์";
       });
       card.setAttribute("aria-busy", "false");
       return { success: false, availableForecasts: 0 };
@@ -130,8 +130,8 @@
     if (failedCount) {
       statusElement.textContent =
         failedCount === cards.length
-          ? "โหลดข้อมูลไม่ได้ โปรดลองอีกครั้งภายหลัง · ข้อมูลจาก Open-Meteo"
-          : `โหลดข้อมูลไม่สำเร็จ ${failedCount} จุด · ข้อมูลจาก Open-Meteo`;
+          ? "ยังไม่มีข้อมูลพยากรณ์ในขณะนี้ · ข้อมูลจาก Open-Meteo"
+          : `ยังไม่มีข้อมูลพยากรณ์ ${failedCount} จุด · ข้อมูลจาก Open-Meteo`;
     } else {
       statusElement.textContent = availableForecasts
         ? `พยากรณ์อัปเดตแล้ว · แสดงเฉพาะวันที่อยู่ในช่วงพยากรณ์ล่วงหน้าสูงสุด 16 วัน · Open-Meteo`

@@ -69,6 +69,151 @@
   text-decoration: none;
 }
 
+.trip-weather {
+  position: relative;
+  overflow: hidden;
+}
+
+.trip-weather-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.trip-weather-eyebrow {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--imap-accent);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.8px;
+}
+
+.trip-weather-header h3 {
+  margin: 0;
+  color: var(--imap-text);
+  font-size: 22px;
+}
+
+.trip-weather-header p {
+  margin: 4px 0 0;
+  color: var(--imap-muted);
+  font-size: 12px;
+}
+
+.trip-weather-refresh {
+  flex-shrink: 0;
+  padding: 9px 13px;
+  color: var(--imap-text);
+  background: var(--imap-bg);
+  border: 1px solid var(--imap-border);
+  border-radius: 10px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.trip-weather-refresh:hover {
+  background: var(--imap-border);
+}
+
+.trip-weather-refresh:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.trip-weather-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.trip-weather-card {
+  position: relative;
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--imap-border);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--imap-bg) 92%, var(--imap-accent));
+  box-shadow: 0 5px 16px rgba(45, 54, 46, 0.06);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.trip-weather-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 9px 22px rgba(45, 54, 46, 0.1);
+}
+
+.trip-weather-card h4 {
+  margin: 0 0 14px;
+  color: var(--imap-text);
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.trip-weather-forecasts {
+  display: grid;
+  gap: 0;
+}
+
+.trip-weather-forecast {
+  display: grid;
+  grid-template-columns: 44px 32px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  padding: 9px 0;
+  border-top: 1px solid var(--imap-border);
+}
+
+.trip-weather-date {
+  color: var(--imap-muted);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.trip-weather-icon {
+  flex-shrink: 0;
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--imap-accent) 12%, var(--imap-bg));
+  font-size: 19px;
+}
+
+.trip-weather-condition {
+  min-width: 0;
+  color: var(--imap-muted);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.trip-weather-temperature {
+  color: var(--imap-text);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.trip-weather-rain {
+  grid-column: 3 / -1;
+  color: var(--imap-muted);
+  font-size: 10px;
+}
+
+.trip-weather-note {
+  margin: 15px 0 0;
+  color: var(--imap-muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
 .isan-map-day-tabs {
   display: flex;
   flex-wrap: wrap;
@@ -448,6 +593,10 @@ body.dark-mode #isan-map .leaflet-tile-pane {
   .isan-map-header {
     align-items: flex-start;
   }
+
+  .trip-weather-cards {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 480px) {
@@ -457,6 +606,22 @@ body.dark-mode #isan-map .leaflet-tile-pane {
 
   .isan-map-header {
     flex-direction: column;
+  }
+
+  .trip-weather {
+    padding: 16px;
+  }
+
+  .trip-weather-header {
+    align-items: flex-start;
+  }
+
+  .trip-weather-header h3 {
+    font-size: 17px;
+  }
+
+  .trip-weather-card {
+    padding: 15px;
   }
 
   .isan-map-header h2 {
@@ -513,6 +678,23 @@ body.dark-mode {
   --vote-border: #58675a;
   --focus: #d0a16e;
   --shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
+}
+
+body.dark-mode .trip-weather-card {
+  border-color: color-mix(in srgb, var(--primary) 38%, var(--line));
+  background: color-mix(in srgb, var(--surface) 88%, var(--primary));
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.3),
+    0 2px 6px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+body.dark-mode .trip-weather-card:hover {
+  border-color: color-mix(in srgb, var(--primary) 60%, var(--line));
+  box-shadow:
+    0 12px 26px rgba(0, 0, 0, 0.4),
+    0 3px 8px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 * {
@@ -1424,6 +1606,139 @@ button:focus-visible {
 .heart-button.liked {
   background: #ffe0e7;
   color: #c62850;
+}
+
+.message-comments {
+  margin-top: 15px;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(0, 0, 0, 0.18);
+}
+
+.message-comments-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: fit-content;
+  max-width: 100%;
+  min-height: 34px;
+  padding: 5px 10px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.38);
+  color: #343434;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  list-style: none;
+}
+
+.message-comments-title::-webkit-details-marker {
+  display: none;
+}
+
+.message-comments-title::after {
+  content: "+";
+  color: #666;
+  font-size: 15px;
+  line-height: 1;
+}
+
+.message-comments[open] .message-comments-title {
+  margin-bottom: 10px;
+}
+
+.message-comments[open] .message-comments-title::after {
+  content: "−";
+}
+
+.message-comments-count {
+  display: grid;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  place-items: center;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.08);
+  color: #444;
+  font-size: 10px;
+}
+
+.message-comments-list {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.message-comments-empty {
+  margin: 0;
+  color: #666;
+  font-size: 12px;
+}
+
+.message-comment {
+  padding: 7px 9px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.42);
+}
+
+.message-comment-author {
+  display: block;
+  color: #444;
+  font-size: 11px;
+}
+
+.message-comment-text {
+  margin: 3px 0;
+  color: #343434;
+  font-size: 13px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+}
+
+.message-comment-date {
+  color: #666;
+  font-size: 10px;
+}
+
+.message-comment-form {
+  display: flex;
+  align-items: stretch;
+  gap: 7px;
+}
+
+.message-comment-form input {
+  flex: 1;
+  min-width: 0;
+  min-height: 34px;
+  padding: 6px 9px;
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.75);
+  color: #343434;
+  font: inherit;
+  font-size: 12px;
+}
+
+.message-comment-form input:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
+}
+
+.message-comment-submit {
+  min-height: 34px;
+  padding: 6px 11px;
+  border: 0;
+  border-radius: 9px;
+  background: var(--primary);
+  color: #fff;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.message-comment-submit:disabled {
+  cursor: wait;
 }
 
 .heart-button:disabled {

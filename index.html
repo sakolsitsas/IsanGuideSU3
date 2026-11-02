@@ -17,7 +17,7 @@
       <button id="themeToggle" type="button"></button>
 
       <!-- Feedback invitation -->
-      <a href="#messageBoard" class="wish-banner">
+      <!-- <a href="#messageBoard" class="wish-banner">
         <div class="wish-banner-content">
           <h2>อยากเห็นอะไร<br />ในทริปนี้ บอกเราได้เลย!</h2>
           <p>
@@ -30,7 +30,7 @@
           </span>
         </div>
         <span class="wish-banner-decoration" aria-hidden="true">✦</span>
-      </a>
+      </a> -->
 
       <!-- Trip overview and guide information -->
       <header class="trip-header">
@@ -53,7 +53,6 @@
             <span class="trip-role">วิทยากร</span>
             <p>
               รองศาสตราจารย์ ดร.สฤษดิ์พงศ์ ขุนทรง<br />
-              ศาสตราจารย์ ดร.สันติ ภัยหลบลี้<br />
               อาจารย์ ดร.อนุรักษ์ ดีพิมาย
             </p>
           </div>
@@ -143,45 +142,129 @@
         <p id="countdownMessage">นับถอยหลังสู่การผจญภัยครั้งใหม่</p>
       </section>
 
-      <!-- Popular messages and message board -->
-      <section class="top-liked-section">
-        <h2>โพสต์ยอดนิยม</h2>
-        <p class="top-liked-subtitle">3 ข้อความที่ได้รับหัวใจมากที่สุด</p>
-        <div id="topLikedList" class="top-liked-list"></div>
-      </section>
-
-      <section class="panel" id="messageBoard">
-        <div class="message-board-heading">
+      <section
+        class="panel trip-weather"
+        aria-labelledby="trip-weather-title"
+      >
+        <div class="trip-weather-header">
           <div>
-            <p class="message-eyebrow">OUR LITTLE MEMORY BOARD</p>
-            <h2>กระดานฝากข้อความ</h2>
-            <p class="message-subtitle">
-              อยากเห็นอะไรในทริปนี้? ฝากข้อความไว้ที่นี่ได้เลย!
-            </p>
+            <span class="trip-weather-eyebrow">WEATHER · THAILAND</span>
+            <h3 id="trip-weather-title">สภาพอากาศ</h3>
+            <p>พยากรณ์ระหว่างทริป 5–7 ธันวาคม 2569</p>
           </div>
+          <button
+            type="button"
+            class="trip-weather-refresh"
+            id="trip-weather-refresh"
+          >
+            อัปเดตพยากรณ์
+          </button>
         </div>
-
-        <form id="messageForm" class="message-form">
-          <label for="messageText">ข้อความที่อยากฝาก</label>
-          <textarea
-            id="messageText"
-            maxlength="300"
-            rows="3"
-            placeholder="คุณอยากได้อะไรจากฉัน... หรืออยากให้ฉันทำอะไรให้คุณบ้าง? ฝากข้อความของคุณไว้ที่นี่เลย!"
-            required
-          ></textarea>
-
-          <div class="message-form-footer">
-            <button type="submit" class="message-submit">📌 แปะข้อความ</button>
-          </div>
-        </form>
-
-        <div class="message-toolbar">
-          <span id="messageCount">0 ข้อความ</span>
+        <div class="trip-weather-cards" id="trip-weather-cards">
+          <article
+            class="trip-weather-card"
+            data-latitude="13.7563"
+            data-longitude="100.5018"
+            data-location="กรุงเทพฯ"
+            aria-busy="true"
+          >
+            <h4>กรุงเทพฯ</h4>
+            <div class="trip-weather-forecasts">
+              <div class="trip-weather-forecast" data-forecast-date="2026-12-05">
+                <span class="trip-weather-date">5 ธ.ค.</span>
+                <span class="trip-weather-icon" aria-hidden="true">⌛</span>
+                <span class="trip-weather-condition">กำลังโหลด...</span>
+                <strong class="trip-weather-temperature">—</strong>
+                <span class="trip-weather-rain">ฝน —</span>
+              </div>
+              <div class="trip-weather-forecast" data-forecast-date="2026-12-06">
+                <span class="trip-weather-date">6 ธ.ค.</span>
+                <span class="trip-weather-icon" aria-hidden="true">⌛</span>
+                <span class="trip-weather-condition">กำลังโหลด...</span>
+                <strong class="trip-weather-temperature">—</strong>
+                <span class="trip-weather-rain">ฝน —</span>
+              </div>
+              <div class="trip-weather-forecast" data-forecast-date="2026-12-07">
+                <span class="trip-weather-date">7 ธ.ค.</span>
+                <span class="trip-weather-icon" aria-hidden="true">⌛</span>
+                <span class="trip-weather-condition">กำลังโหลด...</span>
+                <strong class="trip-weather-temperature">—</strong>
+                <span class="trip-weather-rain">ฝน —</span>
+              </div>
+            </div>
+          </article>
+          <article
+            class="trip-weather-card"
+            data-latitude="14.9799"
+            data-longitude="102.0978"
+            data-location="นครราชสีมา"
+            aria-busy="true"
+          >
+            <h4>นครราชสีมา</h4>
+            <div class="trip-weather-forecasts">
+              <div class="trip-weather-forecast" data-forecast-date="2026-12-05">
+                <span class="trip-weather-date">5 ธ.ค.</span>
+                <span class="trip-weather-icon" aria-hidden="true">⌛</span>
+                <span class="trip-weather-condition">กำลังโหลด...</span>
+                <strong class="trip-weather-temperature">—</strong>
+                <span class="trip-weather-rain">ฝน —</span>
+              </div>
+              <div class="trip-weather-forecast" data-forecast-date="2026-12-06">
+                <span class="trip-weather-date">6 ธ.ค.</span>
+                <span class="trip-weather-icon" aria-hidden="true">⌛</span>
+                <span class="trip-weather-condition">กำลังโหลด...</span>
+                <strong class="trip-weather-temperature">—</strong>
+                <span class="trip-weather-rain">ฝน —</span>
+              </div>
+              <div class="trip-weather-forecast" data-forecast-date="2026-12-07">
+                <span class="trip-weather-date">7 ธ.ค.</span>
+                <span class="trip-weather-icon" aria-hidden="true">⌛</span>
+                <span class="trip-weather-condition">กำลังโหลด...</span>
+                <strong class="trip-weather-temperature">—</strong>
+                <span class="trip-weather-rain">ฝน —</span>
+              </div>
+            </div>
+          </article>
+          <article
+            class="trip-weather-card"
+            data-latitude="14.993"
+            data-longitude="103.1029"
+            data-location="บุรีรัมย์"
+            aria-busy="true"
+          >
+            <h4>บุรีรัมย์</h4>
+            <div class="trip-weather-forecasts">
+              <div class="trip-weather-forecast" data-forecast-date="2026-12-05">
+                <span class="trip-weather-date">5 ธ.ค.</span>
+                <span class="trip-weather-icon" aria-hidden="true">⌛</span>
+                <span class="trip-weather-condition">กำลังโหลด...</span>
+                <strong class="trip-weather-temperature">—</strong>
+                <span class="trip-weather-rain">ฝน —</span>
+              </div>
+              <div class="trip-weather-forecast" data-forecast-date="2026-12-06">
+                <span class="trip-weather-date">6 ธ.ค.</span>
+                <span class="trip-weather-icon" aria-hidden="true">⌛</span>
+                <span class="trip-weather-condition">กำลังโหลด...</span>
+                <strong class="trip-weather-temperature">—</strong>
+                <span class="trip-weather-rain">ฝน —</span>
+              </div>
+              <div class="trip-weather-forecast" data-forecast-date="2026-12-07">
+                <span class="trip-weather-date">7 ธ.ค.</span>
+                <span class="trip-weather-icon" aria-hidden="true">⌛</span>
+                <span class="trip-weather-condition">กำลังโหลด...</span>
+                <strong class="trip-weather-temperature">—</strong>
+                <span class="trip-weather-rain">ฝน —</span>
+              </div>
+            </div>
+          </article>
         </div>
-        <div id="messageList" class="message-list">
-          <p class="message-empty">🌷 ยังไม่มีข้อความ มาเป็นคนแรกกันเลย!</p>
-        </div>
+        <p
+          class="trip-weather-note"
+          id="trip-weather-status"
+          aria-live="polite"
+        >
+          พยากรณ์จะเริ่มแสดงเมื่อวันเดินทางอยู่ในช่วงพยากรณ์ล่วงหน้าสูงสุด 16 วัน · Open-Meteo
+        </p>
       </section>
 
       <!-- Interactive trip map -->
@@ -201,6 +284,8 @@
             <span>✚</span> ฉุกเฉิน 1669
           </a>
         </div>
+
+
 
         <div class="isan-map-day-tabs" aria-label="เลือกวันเดินทาง">
           <button type="button" class="isan-day-btn active" data-day="all">
@@ -260,14 +345,14 @@
           <button
             type="button"
             id="itineraryToggle"
-            aria-expanded="true"
+            aria-expanded="false"
             aria-controls="itineraryContent"
           >
-            ย่อ ▲
+            ขยาย ▼
           </button>
         </div>
 
-        <div id="itineraryContent">
+        <div id="itineraryContent" hidden>
           <div class="schedule-list">
             <div class="tour-slideshow" id="tourSlideshow">
               <div class="tour-slides">
@@ -327,7 +412,7 @@
                 </p>
                 <p>
                   <span class="schedule-time">12:00</span>
-                  รัปประทานอาหารกลางวันร่วมกัน
+                  รัปประทานอาหารกลางวันร่วมกัน @ แซ่บนัวครัวศิริรัตน์
                 </p>
                 <p>
                   <span class="schedule-time">14:00</span> สำรวจโลกบรรพกาล ณ
@@ -343,7 +428,7 @@
                   ชมประตูชุมพล แลนด์มาร์กสำคัญคู่เมืองโคราช
                 </p>
                 <p>
-                  <span class="schedule-time">19:00</span> เข้าที่พัก
+                  <span class="schedule-time">19:00</span> เข้าที่พัก @ โรงแรม ฟอร์จูน โคราช 
                   และรับประทานอาหารเย็น ตามอัธยาศัย
                 </p>
               </div>
@@ -366,7 +451,7 @@
                 </p>
                 <p>
                   <span class="schedule-time">12:00</span>
-                  รับประทานอาหารกลางวันร่วมกัน
+                  รับประทานอาหารกลางวันร่วมกัน @ สวนหอมขนุน — บุรีรัมย์
                 </p>
                 <p>
                   <span class="schedule-time">13:30</span> สำรวจปราสาทเมืองต่ำ
@@ -375,10 +460,10 @@
                 </p>
                 <p>
                   <span class="schedule-time">16:00</span>
-                  ออกเดินทางสู่เมืองพิมาย ดินแดนแห่งอารยธรรมขอมอันรุ่งเรือง
+                  ออกเดินทางสู่ตัวเมืองบุรีรัมย์ 
                 </p>
                 <p>
-                  <span class="schedule-time">19:00</span> เข้าที่พัก
+                  <span class="schedule-time">19:00</span> เข้าที่พัก @ โรงแรมบุรีเทล
                   และรับประทานอาหารเย็น ตามอัธยาศัย
                 </p>
               </div>
@@ -393,7 +478,7 @@
                 </p>
                 <p>
                   <span class="schedule-time">08:00</span>
-                  ออกเดินทางจากโรงแรมที่พัก
+                  ออกเดินทางจากโรงแรมที่พัก 
                 </p>
                 <p>
                   <span class="schedule-time">09:00</span> เยือนปราสาทพิมาย
@@ -402,7 +487,7 @@
                 </p>
                 <p>
                   <span class="schedule-time">12:00</span>
-                  รับประทานอาหารกลางวันร่วมกัน
+                  รับประทานอาหารกลางวันร่วมกัน @ อ.กุ้งเผา - โคราช
                 </p>
                 <p>
                   <span class="schedule-time">14:30</span>
@@ -424,6 +509,49 @@
           </div>
         </div>
       </section>
+
+
+      <!-- Popular messages and message board -->
+      <section class="top-liked-section">
+        <h2>ความคิดเห็นยอดนิยม</h2>
+        <p class="top-liked-subtitle">3 ความคิดเห็นที่ได้รับหัวใจมากที่สุด</p>
+        <div id="topLikedList" class="top-liked-list"></div>
+      </section>
+
+      <section class="panel" id="messageBoard">
+        <div class="message-board-heading">
+          <div>
+            <p class="message-eyebrow">SHARE YOUR THOUGHTS</p>
+            <h2>แสดงความคิดเห็น · พูดคุยทั่วไป</h2>
+            <p class="message-subtitle">
+              พื้นที่แบ่งปันความคิดเห็น พูดคุยเรื่องทริป หรือทักทายกันได้เลย
+            </p>
+          </div>
+        </div>
+
+        <form id="messageForm" class="message-form">
+          <label for="messageText">ความคิดเห็นของคุณ</label>
+          <textarea
+            id="messageText"
+            maxlength="300"
+            rows="3"
+            placeholder="พิมพ์ความคิดเห็น เรื่องที่อยากพูดคุย หรือคำทักทายได้ที่นี่..."
+            required
+          ></textarea>
+
+          <div class="message-form-footer">
+            <button type="submit" class="message-submit">💬 ส่งความคิดเห็น</button>
+          </div>
+        </form>
+
+        <div class="message-toolbar">
+          <span id="messageCount">0 ความคิดเห็น</span>
+        </div>
+        <div id="messageList" class="message-list">
+          <p class="message-empty">🌷 ยังไม่มีความคิดเห็น มาเริ่มพูดคุยกันได้เลย!</p>
+        </div>
+      </section>
+
 
       <!-- SECRET ACTIVITIES / COMING SOON -->
       <!-- Secret activities -->
@@ -512,6 +640,7 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
+    <script src="./js/weather.js"></script>
     <script src="./js/map.js"></script>
   </body>
 </html>

@@ -11,6 +11,7 @@ const submitButton = messageForm.querySelector('button[type="submit"]');
 
 const client = supabaseClient;
 const VOTER_KEY = "isan-tour-voter-id";
+const expandedCommentCards = new Set();
 
 function getVoterId() {
   const storage = getStorage();
@@ -90,7 +91,7 @@ function makeLikeButton(item) {
 
   heart.type = "button";
   heart.disabled = liked;
-  heart.setAttribute("aria-label", `กดหัวใจข้อความของ ${item.name}`);
+  heart.setAttribute("aria-label", `กดหัวใจความคิดเห็นของ ${item.name}`);
   heart.addEventListener("click", async () => {
     if (liked) return;
 
@@ -132,10 +133,34 @@ async function loadMessages() {
       makeElement(
         "p",
         "message-empty",
-        "โหลดข้อความไม่สำเร็จ กรุณาลองใหม่อีกครั้ง",
+        "โหลดความคิดเห็นไม่สำเร็จ กรุณาลองใหม่อีกครั้ง",
       ),
     );
     return;
+  }
+
+  const commentsByMessage = new Map();
+  let commentsError = null;
+  if (data.length) {
+    const { data: comments, error: loadCommentsError } = await client
+      .from("message_comments")
+      .select("id, message_id, name, comment, created_at")
+      .in(
+        "message_id",
+        data.map((item) => item.id),
+      )
+      .order("created_at", { ascending: true });
+
+    if (loadCommentsError) {
+      console.error("โหลดคอมเมนต์ไม่สำเร็จ", loadCommentsError);
+      commentsError = loadCommentsError;
+    } else {
+      comments.forEach((comment) => {
+        const messageComments = commentsByMessage.get(comment.message_id) ?? [];
+        messageComments.push(comment);
+        commentsByMessage.set(comment.message_id, messageComments);
+      });
+    }
   }
 
   renderTopLiked(data);
@@ -144,7 +169,7 @@ async function loadMessages() {
     (a, b) => Date.parse(b.created_at) - Date.parse(a.created_at),
   );
 
-  messageCount.textContent = `${sortedMessages.length} ข้อความ`;
+  messageCount.textContent = `${sortedMessages.length} ความคิดเห็น`;
   messageList.replaceChildren();
 
   if (!sortedMessages.length) {
@@ -152,17 +177,18 @@ async function loadMessages() {
       makeElement(
         "p",
         "message-empty",
-        "🌷 ยังไม่มีข้อความ มาเป็นคนแรกกันเลย!",
+        "🌷 ยังไม่มีความคิดเห็น มาเริ่มพูดคุยกันได้เลย!",
       ),
     );
     return;
   }
 
   sortedMessages.forEach((item) => {
+    item.message_comments = commentsByMessage.get(item.id) ?? [];
     const note = makeElement("article", "sticky-note");
     note.style.backgroundColor = getStickyColor(item.id);
     const tape = makeElement("div", "sticky-tape");
-    const name = makeElement("p", "sticky-name", "ข้อความจากผู้ร่วมทริป");
+    const name = makeElement("p", "sticky-name", "ความคิดเห็นจากผู้ร่วมทริป");
     const content = makeElement("p", "sticky-text", item.message);
     const footer = makeElement("div", "sticky-footer");
 
@@ -178,9 +204,115 @@ async function loadMessages() {
     const heart = makeLikeButton(item);
 
     footer.append(date, heart);
-    note.append(tape, name, content, footer);
+    note.append(tape, name, content, footer, makeCommentsSection(item, commentsError));
     messageList.appendChild(note);
   });
+}
+
+function makeCommentsSection(item, commentsError) {
+  const section = document.createElement("details");
+  section.className = "message-comments";
+  section.open = expandedCommentCards.has(item.id);
+  section.addEventListener("toggle", () => {
+    if (section.open) {
+      expandedCommentCards.add(item.id);
+    } else {
+      expandedCommentCards.delete(item.id);
+    }
+  });
+  const title = makeElement("summary", "message-comments-title");
+  const label = makeElement("span", "", "คอมเมนต์");
+  const count = makeElement(
+    "span",
+    "message-comments-count",
+    String(item.message_comments?.length ?? 0),
+  );
+  title.append(label, count);
+  const list = makeElement("div", "message-comments-list");
+  const comments = [...(item.message_comments ?? [])].sort(
+    (a, b) => Date.parse(a.created_at) - Date.parse(b.created_at),
+  );
+
+  if (commentsError) {
+    list.appendChild(
+      makeElement(
+        "p",
+        "message-comments-empty",
+        commentsError.code === "42P01" || commentsError.code === "PGRST205"
+          ? "ระบบคอมเมนต์ยังไม่พร้อมใช้งาน กรุณาแจ้งผู้ดูแลระบบ"
+          : "โหลดคอมเมนต์ไม่สำเร็จ กรุณารีเฟรชหน้า",
+      ),
+    );
+  } else if (!comments.length) {
+    list.appendChild(
+      makeElement("p", "message-comments-empty", "ยังไม่มีคอมเมนต์"),
+    );
+  } else {
+    comments.forEach((comment) => {
+      const entry = makeElement("article", "message-comment");
+      const author = makeElement(
+        "strong",
+        "message-comment-author",
+        comment.name,
+      );
+      const text = makeElement("p", "message-comment-text", comment.comment);
+      const date = makeElement(
+        "time",
+        "message-comment-date",
+        new Date(comment.created_at).toLocaleDateString("th-TH", {
+          day: "numeric",
+          month: "short",
+        }),
+      );
+
+      entry.append(author, text, date);
+      list.appendChild(entry);
+    });
+  }
+
+  const form = document.createElement("form");
+  form.className = "message-comment-form";
+  const input = document.createElement("input");
+  input.type = "text";
+  input.maxLength = 300;
+  input.required = true;
+  input.placeholder = "เขียนคอมเมนต์...";
+  input.setAttribute("aria-label", `เขียนคอมเมนต์บนความคิดเห็น: ${item.message}`);
+  const submit = makeElement("button", "message-comment-submit", "ส่ง");
+  submit.type = "submit";
+  input.disabled = Boolean(commentsError);
+  submit.disabled = Boolean(commentsError);
+  form.append(input, submit);
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const comment = input.value.trim();
+    if (!comment) return;
+
+    submit.disabled = true;
+    try {
+      const { error } = await client.from("message_comments").insert({
+        message_id: item.id,
+        name: "ผู้ร่วมทริป",
+        comment,
+      });
+
+      if (error) {
+        console.error(error);
+        alert("ส่งคอมเมนต์ไม่สำเร็จ กรุณาลองใหม่");
+        return;
+      }
+
+      await loadMessages();
+    } catch (error) {
+      console.error(error);
+      alert("ส่งคอมเมนต์ไม่สำเร็จ กรุณาลองใหม่");
+    } finally {
+      submit.disabled = false;
+    }
+  });
+
+  section.append(title, list, form);
+  return section;
 }
 
 messageForm.addEventListener("submit", async (event) => {
@@ -199,7 +331,7 @@ messageForm.addEventListener("submit", async (event) => {
 
     if (error) {
       console.error(error);
-      alert("ฝากข้อความไม่สำเร็จ กรุณาลองใหม่");
+      alert("ส่งความคิดเห็นไม่สำเร็จ กรุณาลองใหม่");
       return;
     }
 
@@ -207,7 +339,7 @@ messageForm.addEventListener("submit", async (event) => {
     await loadMessages();
   } catch (error) {
     console.error(error);
-    alert("ฝากข้อความไม่สำเร็จ กรุณาลองใหม่");
+    alert("ส่งความคิดเห็นไม่สำเร็จ กรุณาลองใหม่");
   } finally {
     submitButton.disabled = false;
   }
@@ -253,7 +385,7 @@ function renderTopLiked(data) {
 
   if (!topThree.length) {
     container.appendChild(
-      makeElement("p", "top-liked-empty", "💌 ยังไม่มีข้อความ"),
+      makeElement("p", "top-liked-empty", "💌 ยังไม่มีความคิดเห็น"),
     );
     return;
   }

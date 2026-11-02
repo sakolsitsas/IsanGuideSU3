@@ -101,6 +101,8 @@ if (slideshow) {
 
   let current = 0;
   let timer;
+  let pointerStart = null;
+  let suppressSlideClick = false;
 
   function showSlide(index) {
     current = (index + slides.length) % slides.length;
@@ -136,6 +138,61 @@ if (slideshow) {
       showSlide(index);
       startSlideshow();
     });
+  });
+
+  slideshow.addEventListener("pointerdown", (event) => {
+    if (
+      !event.isPrimary ||
+      event.button !== 0 ||
+      !event.target.closest(".tour-slide")
+    ) {
+      return;
+    }
+
+    pointerStart = {
+      id: event.pointerId,
+      x: event.clientX,
+      y: event.clientY,
+    };
+  });
+
+  slideshow.addEventListener("pointerup", (event) => {
+    if (!pointerStart || event.pointerId !== pointerStart.id) {
+      return;
+    }
+
+    const deltaX = event.clientX - pointerStart.x;
+    const deltaY = event.clientY - pointerStart.y;
+    pointerStart = null;
+
+    if (Math.abs(deltaX) < 40 || Math.abs(deltaX) <= Math.abs(deltaY)) {
+      return;
+    }
+
+    showSlide(current + (deltaX < 0 ? 1 : -1));
+    startSlideshow();
+    suppressSlideClick = true;
+    window.setTimeout(() => {
+      suppressSlideClick = false;
+    }, 0);
+  });
+
+  slideshow.addEventListener("pointercancel", () => {
+    pointerStart = null;
+  });
+
+  slideshow.addEventListener("click", (event) => {
+    if (!event.target.closest(".tour-slide")) {
+      return;
+    }
+
+    if (suppressSlideClick) {
+      event.preventDefault();
+      return;
+    }
+
+    showSlide(current + 1);
+    startSlideshow();
   });
 
   showSlide(0);

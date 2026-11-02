@@ -31,6 +31,32 @@
         </div>
         <span class="wish-banner-decoration" aria-hidden="true">✦</span>
       </a> -->
+    <!-- Trip countdown -->
+      <section class="countdown-panel">
+        <p class="countdown-label">ISAN TOUR IS COMING</p>
+        <h2>เตรียมตัวออกเดินทาง!</h2>
+
+        <div class="countdown-grid">
+          <div class="countdown-item">
+            <span id="cdDays">00</span>
+            <small>วัน</small>
+          </div>
+          <div class="countdown-item">
+            <span id="cdHours">00</span>
+            <small>ชั่วโมง</small>
+          </div>
+          <div class="countdown-item">
+            <span id="cdMinutes">00</span>
+            <small>นาที</small>
+          </div>
+          <div class="countdown-item">
+            <span id="cdSeconds">00</span>
+            <small>วินาที</small>
+          </div>
+        </div>
+
+        <p id="countdownMessage">นับถอยหลังสู่การผจญภัยครั้งใหม่</p>
+      </section>
 
       <!-- Trip overview and guide information -->
       <header class="trip-header">
@@ -115,31 +141,251 @@
         </div>
       </header>
 
-      <!-- Trip countdown -->
-      <section class="countdown-panel">
-        <p class="countdown-label">ISAN TOUR IS COMING</p>
-        <h2>เตรียมตัวออกเดินทาง!</h2>
-
-        <div class="countdown-grid">
-          <div class="countdown-item">
-            <span id="cdDays">00</span>
-            <small>วัน</small>
-          </div>
-          <div class="countdown-item">
-            <span id="cdHours">00</span>
-            <small>ชั่วโมง</small>
-          </div>
-          <div class="countdown-item">
-            <span id="cdMinutes">00</span>
-            <small>นาที</small>
-          </div>
-          <div class="countdown-item">
-            <span id="cdSeconds">00</span>
-            <small>วินาที</small>
-          </div>
+      <!-- Detailed trip schedule -->
+      <section class="panel" id="itineraryPanel">
+        <div class="topline">
+          <h2>กำหนดการเดินทาง</h2>
+          <button
+            type="button"
+            id="itineraryToggle"
+            aria-expanded="false"
+            aria-controls="itineraryContent"
+          >
+            ขยาย ▼
+          </button>
         </div>
 
-        <p id="countdownMessage">นับถอยหลังสู่การผจญภัยครั้งใหม่</p>
+        <div id="itineraryContent" hidden>
+          <div class="schedule-list">
+            <div class="tour-slideshow" id="tourSlideshow">
+              <div class="tour-slides">
+                <button type="button" class="tour-slide active">
+                  <img
+                    src="https://cms.dmpcdn.com/travel/2020/07/12/144261c0-c3f5-11ea-8513-fb8d321e2c29_original.jpg"
+                    alt="โบราณสถานภาคอีสาน"
+                    draggable="false"
+                  />
+                </button>
+
+                <button type="button" class="tour-slide">
+                  <img
+                    src="https://images.openai.com/static-rsc-4/mTV0u_FOqsF39gIyGDvSVTpcmIH0oU3inq95u9mMD946n6WV4EXbzaFWU5IN6E7SPyo20t4PWv_abvLmhmqmAnoN9oNGWUmT3xD8obZGVZgkOqg3D51w15KMxScq8K4cRoJn9XqH4AEJ-coNPPWCVs0MRqKMXWttcB0MbIW_h6BTW3sOlITU9uwwBIxHGcsz?purpose=fullsize"
+                    alt="สถาปัตยกรรมโบราณ"
+                    loading="lazy"
+                    draggable="false"
+                  />
+                </button>
+
+                <button type="button" class="tour-slide">
+                  <img
+                    src="https://media-cdn.tripadvisor.com/media/photo-s/1b/79/b4/ba/caption.jpg"
+                    alt="บรรยากาศการท่องเที่ยว"
+                    loading="lazy"
+                    draggable="false"
+                  />
+                </button>
+
+                <button type="button" class="tour-slide">
+                  <img
+                    src="https://www.matichon.co.th/wp-content/uploads/2024/02/image1-11.jpg"
+                    alt="วัฒนธรรมภาคอีสาน"
+                    loading="lazy"
+                    draggable="false"
+                  />
+                </button>
+              </div>
+
+              <div class="tour-dots">
+                <button class="tour-dot active" aria-label="รูปที่ 1"></button>
+                <button class="tour-dot" aria-label="รูปที่ 2"></button>
+                <button class="tour-dot" aria-label="รูปที่ 3"></button>
+                <button class="tour-dot" aria-label="รูปที่ 4"></button>
+              </div>
+            </div>
+
+            <article class="schedule-day">
+              <div class="day-label">DAY 1</div>
+              <div class="day-content">
+                <h3>วันเสาร์ที่ 5 ธันวาคม 2569 | กรุงเทพฯ —> นครราชสีมา</h3>
+                <p>
+                  <span class="schedule-time">06:00</span>
+                  ออกเดินทางจากมหาวิทยาลัยศิลปากร วังท่าพระ
+                  (รับประทานอาหารเช้าระหว่างทาง ตามอัธยาศัย)
+                </p>
+                <p>
+                  <span class="schedule-time">11:00</span>
+                  เยือนวัดพระนอนธรรมจักรเสมาราม
+                  สัมผัสมรดกอารยธรรมโบราณแห่งเมืองเสมา
+                </p>
+                <p>
+                  <span class="schedule-time">12:00</span>
+                  รัปประทานอาหารกลางวันร่วมกัน @ แซ่บนัวครัวศิริรัตน์
+                </p>
+                <p>
+                  <span class="schedule-time">14:00</span> สำรวจโลกบรรพกาล ณ
+                  พิพิธภัณฑ์ไม้กลายเป็นหิน โคราชจีโอพาร์ค
+                </p>
+                <p>
+                  <span class="schedule-time">15:30</span>
+                  สัมผัสภูมิปัญญาท้องถิ่น เยือนชุมชนเครื่องปั้นดินเผาด่านเกวียน
+                  หรือแหล่งผลิตเกลือบ้านพันดุง
+                </p>
+                <p>
+                  <span class="schedule-time">17:00</span> สักการะท้าวสุรนารี
+                  ชมประตูชุมพล แลนด์มาร์กสำคัญคู่เมืองโคราช
+                </p>
+                <p>
+                  <span class="schedule-time">19:00</span> เข้าที่พัก @ โรงแรม ฟอร์จูน โคราช 
+                  และรับประทานอาหารเย็น ตามอัธยาศัย
+                </p>
+              </div>
+            </article>
+
+            <article class="schedule-day">
+              <div class="day-label">DAY 2</div>
+              <div class="day-content">
+                <h3>วันอาทิตย์ที่ 6 ธันวาคม 2569 | นครราชสีมา <—> บุรีรัมย์</h3>
+                <p>
+                  <span class="schedule-time">07:00</span> รับประทานอาหารเช้า
+                </p>
+                <p>
+                  <span class="schedule-time">08:00</span>
+                  ออกเดินทางจากโรงแรมที่พัก มุ่งหน้าสู่จังหวัดบุรีรัมย์
+                </p>
+                <p>
+                  <span class="schedule-time">10:00</span> เยือนปราสาทพนมรุ้ง
+                  ชมความยิ่งใหญ่ของศาสนสถานเขมรโบราณบนภูเขาไฟที่ดับสนิท
+                </p>
+                <p>
+                  <span class="schedule-time">12:00</span>
+                  รับประทานอาหารกลางวันร่วมกัน @ สวนหอมขนุน — บุรีรัมย์
+                </p>
+                <p>
+                  <span class="schedule-time">13:30</span> สำรวจปราสาทเมืองต่ำ
+                  บารายเมืองต่ำ และกุฏิฤาษี บ้านโคกเมือง
+                  เรียนรู้มรดกทางสถาปัตยกรรมและความเชื่อโบราณ
+                </p>
+                <p>
+                  <span class="schedule-time">16:00</span>
+                  ออกเดินทางสู่ตัวเมืองบุรีรัมย์ 
+                </p>
+                <p>
+                  <span class="schedule-time">19:00</span> เข้าที่พัก @ โรงแรมบุรีเทล
+                  และรับประทานอาหารเย็น ตามอัธยาศัย
+                </p>
+              </div>
+            </article>
+
+            <article class="schedule-day">
+              <div class="day-label">DAY 3</div>
+              <div class="day-content">
+                <h3>วันจันทร์ที่ 7 ธันวาคม 2569 | นครราชสีมา —> กรุงเทพฯ</h3>
+                <p>
+                  <span class="schedule-time">07:00</span> รับประทานอาหารเช้า
+                </p>
+                <p>
+                  <span class="schedule-time">08:00</span>
+                  ออกเดินทางจากโรงแรมที่พัก 
+                </p>
+                <p>
+                  <span class="schedule-time">09:00</span> เยือนปราสาทพิมาย
+                  ชื่นชมความยิ่งใหญ่ของสถาปัตยกรรมขอมโบราณ
+                  หนึ่งในมรดกสำคัญของโคราช
+                </p>
+                <p>
+                  <span class="schedule-time">12:00</span>
+                  รับประทานอาหารกลางวันร่วมกัน @ อ.กุ้งเผา - โคราช
+                </p>
+                <p>
+                  <span class="schedule-time">14:30</span>
+                  ชมภาพเขียนสีเขาจันทร์งาม
+                  เรียนรู้ร่องรอยมนุษย์ยุคก่อนประวัติศาสตร์
+                  พร้อมสัมผัสภูมิปัญญาและวิถีชุมชนเขาจันทร์งาม
+                </p>
+                <p>
+                  <span class="schedule-time">16:00</span>
+                  ออกเดินทางกลับกรุงเทพฯ พร้อมเก็บเกี่ยวความประทับใจตลอดเส้นทาง
+                </p>
+                <p>
+                  <span class="schedule-time">19:00</span>
+                  เดินทางถึงมหาวิทยาลัยศิลปากร วังท่าพระ
+                  (รับประทานอาหารเย็นระหว่างทาง ตามอัธยาศัย)
+                </p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Interactive trip map -->
+      <section id="isan-map-section" class="isan-map-section">
+        <div class="isan-map-header">
+          <div>
+            <span class="isan-map-eyebrow">ISAN FIELD TRIP · 2026</span>
+            <h2>แผนที่การเดินทาง</h2>
+            <p>สำรวจเส้นทางอารยธรรมอีสานใต้ 3 วัน 2 คืน</p>
+          </div>
+
+          <a
+            class="isan-emergency-link"
+            href="tel:1669"
+            aria-label="โทรเรียกรถพยาบาลฉุกเฉิน 1669"
+          >
+            <span>✚</span> ฉุกเฉิน 1669
+          </a>
+        </div>
+
+
+
+        <div class="isan-map-day-tabs" aria-label="เลือกวันเดินทาง">
+          <button type="button" class="isan-day-btn active" data-day="all">
+            ทั้งหมด
+          </button>
+          <button type="button" class="isan-day-btn" data-day="1">DAY 1</button>
+          <button type="button" class="isan-day-btn" data-day="2">DAY 2</button>
+          <button type="button" class="isan-day-btn" data-day="3">DAY 3</button>
+          <button type="button" class="isan-day-btn" data-day="hospital">
+            โรงพยาบาล
+          </button>
+        </div>
+
+        <div class="isan-map-legend">
+          <span
+            ><i class="legend-dot dot-attraction"></i> สถานที่ท่องเที่ยว</span
+          >
+          <span><i class="legend-dot dot-start"></i> เริ่มต้น</span>
+          <span><i class="legend-dot dot-finish"></i> จุดพัก</span>
+          <span><i class="legend-dot dot-meal"></i> อาหาร</span>
+          <span><i class="legend-dot dot-hotel"></i> ที่พัก</span>
+          <span><i class="legend-dot dot-hospital"></i> โรงพยาบาล</span>
+        </div>
+
+        <div class="isan-map-layout">
+          <div class="isan-map-canvas-wrap">
+            <div id="isan-map" aria-label="แผนที่เส้นทางทริปอีสาน"></div>
+            <div class="isan-map-caption">
+              <span class="isan-map-live-dot"></span>
+              INTERACTIVE ROUTE MAP
+            </div>
+          </div>
+
+          <aside class="isan-map-sidebar">
+            <div class="isan-map-sidebar-head">
+              <div>
+                <h3 id="isan-map-list-title">สถานที่ทั้งหมด</h3>
+                <p id="isan-map-list-count">กำลังโหลดรายการ...</p>
+              </div>
+              <span class="isan-map-pin-icon">⌖</span>
+            </div>
+
+            <div id="isan-map-locations" class="isan-map-locations"></div>
+          </aside>
+        </div>
+
+        <div class="isan-map-footer">
+          <span>MAP DATA · OPENSTREETMAP</span>
+          <button type="button" id="isan-map-reset">แสดงทุกสถานที่ ↗</button>
+        </div>
       </section>
 
       <section
@@ -267,292 +513,6 @@
         </p>
       </section>
 
-      <!-- Interactive trip map -->
-      <section id="isan-map-section" class="isan-map-section">
-        <div class="isan-map-header">
-          <div>
-            <span class="isan-map-eyebrow">ISAN FIELD TRIP · 2026</span>
-            <h2>แผนที่การเดินทาง</h2>
-            <p>สำรวจเส้นทางอารยธรรมอีสานใต้ 3 วัน 2 คืน</p>
-          </div>
-
-          <a
-            class="isan-emergency-link"
-            href="tel:1669"
-            aria-label="โทรเรียกรถพยาบาลฉุกเฉิน 1669"
-          >
-            <span>✚</span> ฉุกเฉิน 1669
-          </a>
-        </div>
-
-
-
-        <div class="isan-map-day-tabs" aria-label="เลือกวันเดินทาง">
-          <button type="button" class="isan-day-btn active" data-day="all">
-            ทั้งหมด
-          </button>
-          <button type="button" class="isan-day-btn" data-day="1">DAY 1</button>
-          <button type="button" class="isan-day-btn" data-day="2">DAY 2</button>
-          <button type="button" class="isan-day-btn" data-day="3">DAY 3</button>
-          <button type="button" class="isan-day-btn" data-day="hospital">
-            โรงพยาบาล
-          </button>
-        </div>
-
-        <div class="isan-map-legend">
-          <span
-            ><i class="legend-dot dot-attraction"></i> สถานที่ท่องเที่ยว</span
-          >
-          <span><i class="legend-dot dot-start"></i> เริ่มต้น</span>
-          <span><i class="legend-dot dot-finish"></i> จุดพัก</span>
-          <span><i class="legend-dot dot-meal"></i> อาหาร</span>
-          <span><i class="legend-dot dot-hotel"></i> ที่พัก</span>
-          <span><i class="legend-dot dot-hospital"></i> โรงพยาบาล</span>
-        </div>
-
-        <div class="isan-map-layout">
-          <div class="isan-map-canvas-wrap">
-            <div id="isan-map" aria-label="แผนที่เส้นทางทริปอีสาน"></div>
-            <div class="isan-map-caption">
-              <span class="isan-map-live-dot"></span>
-              INTERACTIVE ROUTE MAP
-            </div>
-          </div>
-
-          <aside class="isan-map-sidebar">
-            <div class="isan-map-sidebar-head">
-              <div>
-                <h3 id="isan-map-list-title">สถานที่ทั้งหมด</h3>
-                <p id="isan-map-list-count">กำลังโหลดรายการ...</p>
-              </div>
-              <span class="isan-map-pin-icon">⌖</span>
-            </div>
-
-            <div id="isan-map-locations" class="isan-map-locations"></div>
-          </aside>
-        </div>
-
-        <div class="isan-map-footer">
-          <span>MAP DATA · OPENSTREETMAP</span>
-          <button type="button" id="isan-map-reset">แสดงทุกสถานที่ ↗</button>
-        </div>
-      </section>
-
-      <!-- Detailed trip schedule -->
-      <section class="panel" id="itineraryPanel">
-        <div class="topline">
-          <h2>กำหนดการเดินทาง</h2>
-          <button
-            type="button"
-            id="itineraryToggle"
-            aria-expanded="false"
-            aria-controls="itineraryContent"
-          >
-            ขยาย ▼
-          </button>
-        </div>
-
-        <div id="itineraryContent" hidden>
-          <div class="schedule-list">
-            <div class="tour-slideshow" id="tourSlideshow">
-              <div class="tour-slides">
-                <div class="tour-slide active">
-                  <img
-                    src="https://cms.dmpcdn.com/travel/2020/07/12/144261c0-c3f5-11ea-8513-fb8d321e2c29_original.jpg"
-                    alt="โบราณสถานภาคอีสาน"
-                  />
-                </div>
-
-                <div class="tour-slide">
-                  <img
-                    src="https://images.openai.com/static-rsc-4/mTV0u_FOqsF39gIyGDvSVTpcmIH0oU3inq95u9mMD946n6WV4EXbzaFWU5IN6E7SPyo20t4PWv_abvLmhmqmAnoN9oNGWUmT3xD8obZGVZgkOqg3D51w15KMxScq8K4cRoJn9XqH4AEJ-coNPPWCVs0MRqKMXWttcB0MbIW_h6BTW3sOlITU9uwwBIxHGcsz?purpose=fullsize"
-                    alt="สถาปัตยกรรมโบราณ"
-                    loading="lazy"
-                  />
-                </div>
-
-                <div class="tour-slide">
-                  <img
-                    src="https://media-cdn.tripadvisor.com/media/photo-s/1b/79/b4/ba/caption.jpg"
-                    alt="บรรยากาศการท่องเที่ยว"
-                    loading="lazy"
-                  />
-                </div>
-
-                <div class="tour-slide">
-                  <img
-                    src="https://www.matichon.co.th/wp-content/uploads/2024/02/image1-11.jpg"
-                    alt="วัฒนธรรมภาคอีสาน"
-                    loading="lazy"
-                  />
-                </div>
-              </div>
-
-              <div class="tour-dots">
-                <button class="tour-dot active" aria-label="รูปที่ 1"></button>
-                <button class="tour-dot" aria-label="รูปที่ 2"></button>
-                <button class="tour-dot" aria-label="รูปที่ 3"></button>
-                <button class="tour-dot" aria-label="รูปที่ 4"></button>
-              </div>
-            </div>
-
-            <article class="schedule-day">
-              <div class="day-label">DAY 1</div>
-              <div class="day-content">
-                <h3>วันเสาร์ที่ 5 ธันวาคม 2569 | กรุงเทพฯ —> นครราชสีมา</h3>
-                <p>
-                  <span class="schedule-time">06:00</span>
-                  ออกเดินทางจากมหาวิทยาลัยศิลปากร วังท่าพระ
-                  (รับประทานอาหารเช้าระหว่างทาง ตามอัธยาศัย)
-                </p>
-                <p>
-                  <span class="schedule-time">11:00</span>
-                  เยือนวัดพระนอนธรรมจักรเสมาราม
-                  สัมผัสมรดกอารยธรรมโบราณแห่งเมืองเสมา
-                </p>
-                <p>
-                  <span class="schedule-time">12:00</span>
-                  รัปประทานอาหารกลางวันร่วมกัน @ แซ่บนัวครัวศิริรัตน์
-                </p>
-                <p>
-                  <span class="schedule-time">14:00</span> สำรวจโลกบรรพกาล ณ
-                  พิพิธภัณฑ์ไม้กลายเป็นหิน โคราชจีโอพาร์ค
-                </p>
-                <p>
-                  <span class="schedule-time">15:30</span>
-                  สัมผัสภูมิปัญญาท้องถิ่น เยือนชุมชนเครื่องปั้นดินเผาด่านเกวียน
-                  หรือแหล่งผลิตเกลือบ้านพันดุง
-                </p>
-                <p>
-                  <span class="schedule-time">17:00</span> สักการะท้าวสุรนารี
-                  ชมประตูชุมพล แลนด์มาร์กสำคัญคู่เมืองโคราช
-                </p>
-                <p>
-                  <span class="schedule-time">19:00</span> เข้าที่พัก @ โรงแรม ฟอร์จูน โคราช 
-                  และรับประทานอาหารเย็น ตามอัธยาศัย
-                </p>
-              </div>
-            </article>
-
-            <article class="schedule-day">
-              <div class="day-label">DAY 2</div>
-              <div class="day-content">
-                <h3>วันอาทิตย์ที่ 6 ธันวาคม 2569 | นครราชสีมา <—> บุรีรัมย์</h3>
-                <p>
-                  <span class="schedule-time">07:00</span> รับประทานอาหารเช้า
-                </p>
-                <p>
-                  <span class="schedule-time">08:00</span>
-                  ออกเดินทางจากโรงแรมที่พัก มุ่งหน้าสู่จังหวัดบุรีรัมย์
-                </p>
-                <p>
-                  <span class="schedule-time">10:00</span> เยือนปราสาทพนมรุ้ง
-                  ชมความยิ่งใหญ่ของศาสนสถานเขมรโบราณบนภูเขาไฟที่ดับสนิท
-                </p>
-                <p>
-                  <span class="schedule-time">12:00</span>
-                  รับประทานอาหารกลางวันร่วมกัน @ สวนหอมขนุน — บุรีรัมย์
-                </p>
-                <p>
-                  <span class="schedule-time">13:30</span> สำรวจปราสาทเมืองต่ำ
-                  บารายเมืองต่ำ และกุฏิฤาษี บ้านโคกเมือง
-                  เรียนรู้มรดกทางสถาปัตยกรรมและความเชื่อโบราณ
-                </p>
-                <p>
-                  <span class="schedule-time">16:00</span>
-                  ออกเดินทางสู่ตัวเมืองบุรีรัมย์ 
-                </p>
-                <p>
-                  <span class="schedule-time">19:00</span> เข้าที่พัก @ โรงแรมบุรีเทล
-                  และรับประทานอาหารเย็น ตามอัธยาศัย
-                </p>
-              </div>
-            </article>
-
-            <article class="schedule-day">
-              <div class="day-label">DAY 3</div>
-              <div class="day-content">
-                <h3>วันจันทร์ที่ 7 ธันวาคม 2569 | นครราชสีมา —> กรุงเทพฯ</h3>
-                <p>
-                  <span class="schedule-time">07:00</span> รับประทานอาหารเช้า
-                </p>
-                <p>
-                  <span class="schedule-time">08:00</span>
-                  ออกเดินทางจากโรงแรมที่พัก 
-                </p>
-                <p>
-                  <span class="schedule-time">09:00</span> เยือนปราสาทพิมาย
-                  ชื่นชมความยิ่งใหญ่ของสถาปัตยกรรมขอมโบราณ
-                  หนึ่งในมรดกสำคัญของโคราช
-                </p>
-                <p>
-                  <span class="schedule-time">12:00</span>
-                  รับประทานอาหารกลางวันร่วมกัน @ อ.กุ้งเผา - โคราช
-                </p>
-                <p>
-                  <span class="schedule-time">14:30</span>
-                  ชมภาพเขียนสีเขาจันทร์งาม
-                  เรียนรู้ร่องรอยมนุษย์ยุคก่อนประวัติศาสตร์
-                  พร้อมสัมผัสภูมิปัญญาและวิถีชุมชนเขาจันทร์งาม
-                </p>
-                <p>
-                  <span class="schedule-time">16:00</span>
-                  ออกเดินทางกลับกรุงเทพฯ พร้อมเก็บเกี่ยวความประทับใจตลอดเส้นทาง
-                </p>
-                <p>
-                  <span class="schedule-time">19:00</span>
-                  เดินทางถึงมหาวิทยาลัยศิลปากร วังท่าพระ
-                  (รับประทานอาหารเย็นระหว่างทาง ตามอัธยาศัย)
-                </p>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-
-      <!-- Popular messages and message board -->
-      <section class="top-liked-section">
-        <h2>ความคิดเห็นยอดนิยม</h2>
-        <p class="top-liked-subtitle">3 ความคิดเห็นที่ได้รับหัวใจมากที่สุด</p>
-        <div id="topLikedList" class="top-liked-list"></div>
-      </section>
-
-      <section class="panel" id="messageBoard">
-        <div class="message-board-heading">
-          <div>
-            <p class="message-eyebrow">SHARE YOUR THOUGHTS</p>
-            <h2>แสดงความคิดเห็น · พูดคุยทั่วไป</h2>
-            <p class="message-subtitle">
-              พื้นที่แบ่งปันความคิดเห็น พูดคุยเรื่องทริป หรือทักทายกันได้เลย
-            </p>
-          </div>
-        </div>
-
-        <form id="messageForm" class="message-form">
-          <label for="messageText">ความคิดเห็นของคุณ</label>
-          <textarea
-            id="messageText"
-            maxlength="300"
-            rows="3"
-            placeholder="พิมพ์ความคิดเห็น เรื่องที่อยากพูดคุย หรือคำทักทายได้ที่นี่..."
-            required
-          ></textarea>
-
-          <div class="message-form-footer">
-            <button type="submit" class="message-submit">💬 ส่งความคิดเห็น</button>
-          </div>
-        </form>
-
-        <div class="message-toolbar">
-          <span id="messageCount">0 ความคิดเห็น</span>
-        </div>
-        <div id="messageList" class="message-list">
-          <p class="message-empty">🌷 ยังไม่มีความคิดเห็น มาเริ่มพูดคุยกันได้เลย!</p>
-        </div>
-      </section>
-
-
       <!-- SECRET ACTIVITIES / COMING SOON -->
       <!-- Secret activities -->
       <section id="coming-soon" class="coming-soon-section">
@@ -612,6 +572,48 @@
         </div>
         <p class="secret-disclaimer">รายละเอียดจะเปิดเผยเมื่อถึงเวลาเท่านั้น</p>
       </section>
+
+      <!-- Popular messages and message board -->
+      <section class="top-liked-section">
+        <h2>ความคิดเห็นยอดนิยม</h2>
+        <p class="top-liked-subtitle">3 ความคิดเห็นที่ได้รับหัวใจมากที่สุด</p>
+        <div id="topLikedList" class="top-liked-list"></div>
+      </section>
+
+      <section class="panel" id="messageBoard">
+        <div class="message-board-heading">
+          <div>
+            <p class="message-eyebrow">SHARE YOUR THOUGHTS</p>
+            <h2>แสดงความคิดเห็น · พูดคุยทั่วไป</h2>
+            <p class="message-subtitle">
+              พื้นที่แบ่งปันความคิดเห็น พูดคุยเรื่องทริป หรือทักทายกันได้เลย
+            </p>
+          </div>
+        </div>
+
+        <form id="messageForm" class="message-form">
+          <label for="messageText">ความคิดเห็นของคุณ</label>
+          <textarea
+            id="messageText"
+            maxlength="300"
+            rows="3"
+            placeholder="พิมพ์ความคิดเห็น เรื่องที่อยากพูดคุย หรือคำทักทายได้ที่นี่..."
+            required
+          ></textarea>
+
+          <div class="message-form-footer">
+            <button type="submit" class="message-submit">💬 ส่งความคิดเห็น</button>
+          </div>
+        </form>
+
+        <div class="message-toolbar">
+          <span id="messageCount">0 ความคิดเห็น</span>
+        </div>
+        <div id="messageList" class="message-list">
+          <p class="message-empty">🌷 ยังไม่มีความคิดเห็น มาเริ่มพูดคุยกันได้เลย!</p>
+        </div>
+      </section>
+
 
       <footer class="site-stats" aria-label="สถิติผู้เข้าชม">
         <div class="site-stat">

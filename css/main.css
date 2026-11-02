@@ -1227,6 +1227,7 @@ button:focus-visible {
   background: #222;
   isolation: isolate;
   aspect-ratio: 16 / 9;
+  touch-action: pan-y;
 }
 
 .tour-slides {
@@ -1235,14 +1236,24 @@ button:focus-visible {
 }
 
 .tour-slide {
+  appearance: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
   position: absolute;
   inset: 0;
   opacity: 0;
   visibility: hidden;
   overflow: hidden;
+  cursor: pointer;
   transition:
     opacity 1s ease,
     visibility 1s ease;
+}
+
+.tour-slide:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: -6px;
 }
 
 .tour-slide.active {
@@ -1257,6 +1268,8 @@ button:focus-visible {
   height: 100%;
   object-fit: cover;
   object-position: center;
+  user-select: none;
+  -webkit-user-drag: none;
   margin: 0;
   padding: 0;
   border: 0;

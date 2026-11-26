@@ -812,6 +812,8 @@ html {
 }
 
 body {
+  position: relative;
+  isolation: isolate;
   margin: 0;
   font-family:
     system-ui,
@@ -825,6 +827,21 @@ body {
   transition:
     background 0.2s,
     color 0.2s;
+}
+
+body::before {
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  background: url("../images/isan-clock-background.png") center / cover no-repeat;
+  content: "";
+  filter: saturate(0.72) hue-rotate(22deg);
+  opacity: 0.16;
+  pointer-events: none;
+}
+
+body.dark-mode::before {
+  opacity: 0.1;
 }
 
 .site-stats {

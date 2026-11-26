@@ -139,6 +139,42 @@
       description: "บรรยากาสดีวิสวยมีก้องรองรับแบบหลากหลายตามชอบ แพ หรือห้องแอร์ มีดนตรีสดไห้ฟังสบาย อาหารรสชาติดี หรูหรา สะอาด เหมสะทั้งแบบครอบครัว โรแมนติก และสังสรรค์ ที่จอดรดสะดวกสบาย",
     },
     {
+      day: "restaurant",
+      time: "แนะนำ",
+      name: "ซ้อเรือง อาหารตามสั่ง",
+      type: "meal",
+      lat: 14.9768758,
+      lng: 102.0913421,
+      description: "ร้านอาหารตามสั่งในตัวเมืองนครราชสีมา",
+    },
+    {
+      day: "restaurant",
+      time: "แนะนำ",
+      name: "เจ๊น้อยกระโทก",
+      type: "meal",
+      lat: 14.9657784,
+      lng: 102.0888697,
+      description: "ร้านอาหารในตัวเมืองนครราชสีมา",
+    },
+    {
+      day: "restaurant",
+      time: "แนะนำ",
+      name: "ลาบโต๊ะแดง บุรีรัมย์",
+      type: "meal",
+      lat: 15.000352,
+      lng: 103.1053307,
+      description: "ร้านอาหารในตัวเมืองบุรีรัมย์",
+    },
+    {
+      day: "restaurant",
+      time: "แนะนำ",
+      name: "ราดหน้าสวนหมาก",
+      type: "meal",
+      lat: 14.9730537,
+      lng: 102.0941316,
+      description: "140 ถนนจอมสุรางค์ยาตร์ ตำบลในเมือง อำเภอเมืองนครราชสีมา",
+    },
+    {
       day: 3,
       time: "14:30",
       name: "ภาพเขียนสีเขาจันทร์งาม",
@@ -260,29 +296,37 @@
       description: "โรงพยาบาลเอกชนในตัวเมืองบุรีรัมย์",
     },
   ];
+  const restaurantSearches = [
+    { name: "แมนโร่ ซั่วหมี่โคราช", query: "แมนโร่ ซั่วหมี่โคราช" },
+    { name: "ไก่ย่างนายเมือง 2 มิตรภาพ", query: "ไก่ย่างนายเมือง 2 มิตรภาพ โคราช" },
+    { name: "ตำกระเทย บุรีรัมย์", query: "ตำกระเทย บุรีรัมย์" },
+    { name: "แม่ตุ้ยแจ่วฮ้อน", query: "แม่ตุ้ยแจ่วฮ้อน" },
+    { name: "ถนนคนเดินเซราะกราว", query: "ถนนคนเดินเซราะกราว บุรีรัมย์" },
+    { name: "แคลิฟอร์เนียลาบก้อย", query: "แคลิฟอร์เนียลาบก้อย" },
+  ];
 
   const styles = {
-    start: { color: "#16a34a", icon: "S", label: "จุดเริ่มต้น" },
-    finish: { color: "#dc2626", icon: "F", label: "จุดสิ้นสุด" },
+    start: { color: "#16a34a", icon: "🚩", label: "จุดเริ่มต้น" },
+    finish: { color: "#dc2626", icon: "🏁", label: "จุดสิ้นสุด" },
     attraction: {
       color: "#3478db",
-      icon: "•",
+      icon: "🏛️",
       label: "สถานที่ท่องเที่ยว",
     },
     alternative: {
       color: "#9333ea",
-      icon: "↔",
+      icon: "🔀",
       label: "สถานที่ทางเลือก",
     },
-    meal: { color: "#d97706", icon: "฿", label: "อาหาร" },
-    hotel: { color: "#0891b2", icon: "H", label: "ที่พัก" },
-    transit: { color: "#64748b", icon: "→", label: "จุดเดินทาง" },
-    hospital: { color: "#e11d48", icon: "+", label: "โรงพยาบาล" },
+    meal: { color: "#d97706", icon: "🍽️", label: "อาหาร" },
+    hotel: { color: "#0891b2", icon: "🏨", label: "ที่พัก" },
+    transit: { color: "#64748b", icon: "🚌", label: "จุดเดินทาง" },
+    hospital: { color: "#e11d48", icon: "🏥", label: "โรงพยาบาล" },
   };
 
   const map = L.map("isan-map", {
     scrollWheelZoom: false,
-  });
+  }).setView([15, 102], 6);
 
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
@@ -292,6 +336,8 @@
 
   const markers = [];
   const markerByLocation = new Map();
+  const endpointMarkerByLocation = new Map();
+  const markerLayer = L.layerGroup().addTo(map);
   const listElement = document.getElementById("isan-map-locations");
   const titleElement = document.getElementById("isan-map-list-title");
   const countElement = document.getElementById("isan-map-list-count");
@@ -321,13 +367,20 @@
     );
   }
 
-  function createMarker(location, index) {
+  function googleMapsSearchUrl(query) {
+    return (
+      "https://www.google.com/maps/search/?api=1&query=" +
+      encodeURIComponent(query)
+    );
+  }
+
+  function createMarker(location) {
     const style = styles[location.type] || styles.attraction;
 
     const icon = L.divIcon({
       className: "",
       html: `<div class="isan-pin" style="background:${style.color}">
-        <span>${style.icon === "•" ? index + 1 : style.icon}</span>
+        <span>${style.icon}</span>
       </div>`,
       iconSize: [34, 34],
       iconAnchor: [17, 32],
@@ -348,29 +401,242 @@
     marker.on("click", () => {
       selectedLocation = location;
       renderList();
+      scrollToSelectedLocation();
     });
 
-    marker.addTo(map);
     markers.push({ location, marker });
     markerByLocation.set(location, marker);
   }
 
   locations.forEach(createMarker);
 
+  function isCoincidentEndpoint(location) {
+    if (location.type !== "start" && location.type !== "finish") return false;
+
+    const counterpartType = location.type === "start" ? "finish" : "start";
+    return locations.some(
+      (candidate) =>
+        candidate.type === counterpartType &&
+        candidate.lat === location.lat &&
+        candidate.lng === location.lng,
+    );
+  }
+
+  function bindLocationChoices(marker, cluster, heading) {
+    const locationButtons = cluster.items
+      .map(
+        ({ location }) => `
+          <button type="button" class="isan-cluster-location"
+            data-cluster-location-index="${locations.indexOf(location)}">
+            <span>${escapeHTML(location.time)}</span>
+            <strong>${escapeHTML(location.name)}</strong>
+          </button>
+        `,
+      )
+      .join("");
+
+    marker
+      .bindPopup(
+        `<div class="isan-cluster-popup">
+          <strong>${heading}</strong>
+          <div>${locationButtons}</div>
+        </div>`,
+        { maxWidth: 280, minWidth: 200 },
+      )
+      .on("popupopen", (event) => {
+        event.popup
+          .getElement()
+          .querySelectorAll("[data-cluster-location-index]")
+          .forEach((button) => {
+            button.addEventListener("click", () => {
+              const location =
+                locations[Number(button.dataset.clusterLocationIndex)];
+              if (location) focusLocation(location);
+            });
+          });
+      });
+
+    return marker;
+  }
+
+  function createEndpointPairMarker(cluster) {
+    const endpointMarker = L.marker(cluster.center, {
+      icon: L.divIcon({
+        className: "isan-endpoint-pair-icon",
+        html: `<div class="isan-endpoint-pair" role="img"
+          aria-label="จุดเริ่มต้นและจุดสิ้นสุดอยู่ตำแหน่งเดียวกัน">
+          <span class="isan-endpoint-start">🚩</span>
+          <span class="isan-endpoint-finish">🏁</span>
+        </div>`,
+        iconSize: [88, 42],
+        iconAnchor: [44, 21],
+      }),
+    });
+
+    cluster.items.forEach(({ location }) =>
+      endpointMarkerByLocation.set(location, endpointMarker),
+    );
+
+    return bindLocationChoices(
+      endpointMarker,
+      cluster,
+      "จุดเริ่มต้นและจุดสิ้นสุด",
+    );
+  }
+
+  function createClusterMarker(cluster) {
+    const clusterMarker = L.marker(cluster.center, {
+      icon: L.divIcon({
+        className: "isan-cluster-icon",
+        html: `<button type="button" class="isan-marker-cluster"
+          aria-label="มี ${cluster.items.length} สถานที่ กดเพื่อขยาย">${cluster.items.length}</button>`,
+        iconSize: [42, 42],
+        iconAnchor: [21, 21],
+      }),
+      keyboard: false,
+    });
+
+    function openClusterLocations() {
+      bindLocationChoices(
+        clusterMarker,
+        cluster,
+        `เลือกสถานที่ (${cluster.items.length})`,
+      ).openPopup();
+    }
+
+    function zoomToCluster() {
+      if (map.getZoom() >= 17) {
+        openClusterLocations();
+        return;
+      }
+
+      const bounds = L.latLngBounds(
+        cluster.items.map(({ location }) => [location.lat, location.lng]),
+      );
+      map.fitBounds(bounds, {
+        padding: [48, 48],
+        maxZoom: Math.min(17, map.getZoom() + 3),
+      });
+    }
+
+    clusterMarker.on("click", zoomToCluster);
+    clusterMarker.on("popupopen", (event) => {
+      event.popup
+        .getElement()
+        .querySelectorAll("[data-cluster-location-index]")
+        .forEach((button) => {
+          button.addEventListener("click", () => {
+            const location =
+              locations[Number(button.dataset.clusterLocationIndex)];
+            if (location) focusLocation(location);
+          });
+        });
+    });
+
+    return clusterMarker;
+  }
+
+  function renderMapMarkers() {
+    markerLayer.clearLayers();
+    const clusters = [];
+    const clusterRadius = 48;
+
+    markers
+      .filter(
+        ({ location }) =>
+          isVisible(location) &&
+          (location !== selectedLocation || isCoincidentEndpoint(location)),
+      )
+      .forEach((item) => {
+        const point = map.latLngToLayerPoint(item.marker.getLatLng());
+        const cluster = clusters.find(
+          (candidate) =>
+            point.distanceTo(candidate.centerPoint) <= clusterRadius,
+        );
+
+        if (cluster) {
+          cluster.items.push(item);
+          const points = cluster.items.map(({ marker }) =>
+            map.latLngToLayerPoint(marker.getLatLng()),
+          );
+          cluster.centerPoint = L.point(
+            points.reduce((sum, current) => sum + current.x, 0) / points.length,
+            points.reduce((sum, current) => sum + current.y, 0) / points.length,
+          );
+          cluster.center = map.layerPointToLatLng(cluster.centerPoint);
+        } else {
+          clusters.push({
+            items: [item],
+            centerPoint: point,
+            center: item.marker.getLatLng(),
+          });
+        }
+      });
+
+    clusters.forEach((cluster) => {
+      if (cluster.items.length === 1) {
+        markerLayer.addLayer(cluster.items[0].marker);
+      } else if (
+        cluster.items.length === 2 &&
+        cluster.items.some(({ location }) => location.type === "start") &&
+        cluster.items.some(({ location }) => location.type === "finish") &&
+        cluster.items.every(
+          ({ location }) =>
+            location.lat === cluster.items[0].location.lat &&
+            location.lng === cluster.items[0].location.lng,
+        )
+      ) {
+        markerLayer.addLayer(createEndpointPairMarker(cluster));
+      } else {
+        markerLayer.addLayer(createClusterMarker(cluster));
+      }
+    });
+    const expandedMarker = markerByLocation.get(selectedLocation);
+    if (expandedMarker && isVisible(selectedLocation)) {
+      markerLayer.addLayer(expandedMarker);
+    }
+  }
+
   function isVisible(location) {
     if (selectedDay === "all") return true;
     if (selectedDay === "hospital") return location.type === "hospital";
+    if (selectedDay === "meal") return location.type === "meal";
     return String(location.day) === selectedDay;
   }
 
   function focusLocation(location) {
+    if (isCoincidentEndpoint(location)) {
+      selectedLocation = location;
+      renderList();
+      renderMapMarkers();
+      const marker = endpointMarkerByLocation.get(location);
+      if (marker) marker.openPopup();
+      return;
+    }
+
     const marker = markerByLocation.get(location);
     if (!marker) return;
 
-    map.flyTo([location.lat, location.lng], 13, { duration: 0.7 });
-    marker.openPopup();
     selectedLocation = location;
     renderList();
+    renderMapMarkers();
+    const target = L.latLng(location.lat, location.lng);
+    const shouldMove =
+      map.getZoom() < 13 || map.getCenter().distanceTo(target) > 50;
+
+    if (shouldMove) {
+      map.once("moveend", () => marker.openPopup());
+      map.flyTo(target, 13, { duration: 0.7 });
+    } else {
+      marker.openPopup();
+    }
+  }
+
+  function scrollToSelectedLocation() {
+    const selectedButton = listElement.querySelector(
+      ".isan-map-location.selected",
+    );
+    selectedButton?.scrollIntoView({ block: "nearest", behavior: "smooth" });
   }
 
   function renderList() {
@@ -381,11 +647,16 @@
         ? "สถานที่ทั้งหมด"
         : selectedDay === "hospital"
           ? "โรงพยาบาล"
-          : `สถานที่ DAY ${selectedDay}`;
+          : selectedDay === "meal"
+            ? "ร้านอาหาร"
+            : `สถานที่ DAY ${selectedDay}`;
 
-    countElement.textContent = `${visibleLocations.length} จุด`;
+    countElement.textContent =
+      selectedDay === "meal"
+        ? `${visibleLocations.length} จุดบนแผนที่ · ${restaurantSearches.length} จุดค้นหา`
+        : `${visibleLocations.length} จุด`;
 
-    listElement.innerHTML = visibleLocations
+    const locationItems = visibleLocations
       .map((location) => {
         const style = styles[location.type] || styles.attraction;
         const isSelected = selectedLocation === location;
@@ -410,6 +681,33 @@
       })
       .join("");
 
+    const restaurantItems =
+      selectedDay === "meal"
+        ? restaurantSearches
+            .map(
+              ({ name, query }) => `
+                <a class="isan-map-location isan-map-location-search"
+                  href="${googleMapsSearchUrl(query)}"
+                  target="_blank" rel="noopener noreferrer">
+                  <span class="isan-map-location-marker"
+                    style="background:${styles.meal.color}">${styles.meal.icon}</span>
+                  <span class="isan-map-location-content">
+                    <span class="isan-map-location-top">
+                      <span class="isan-map-location-time">ยังไม่ปักหมุด</span>
+                      <span class="isan-map-location-type">อาหาร</span>
+                    </span>
+                    <span class="isan-map-location-name">${escapeHTML(name)}</span>
+                    <span class="isan-map-location-desc">ยังไม่พบพิกัดที่ยืนยันได้</span>
+                    <span class="isan-map-location-link">ค้นหาใน Google Maps ↗</span>
+                  </span>
+                </a>
+              `,
+            )
+            .join("")
+        : "";
+
+    listElement.innerHTML = locationItems + restaurantItems;
+
     listElement.querySelectorAll("[data-location-index]").forEach((button) => {
       button.addEventListener("click", () => {
         const location = locations[Number(button.dataset.locationIndex)];
@@ -428,15 +726,8 @@
       button.setAttribute("aria-pressed", String(active));
     });
 
-    markers.forEach(({ location, marker }) => {
-      if (isVisible(location)) {
-        if (!map.hasLayer(marker)) marker.addTo(map);
-      } else {
-        if (map.hasLayer(marker)) map.removeLayer(marker);
-      }
-    });
-
     renderList();
+    renderMapMarkers();
 
     const visible = markers.filter(({ location }) => isVisible(location));
 
@@ -451,6 +742,8 @@
   dayButtons.forEach((button) => {
     button.addEventListener("click", () => applyFilter(button.dataset.day));
   });
+
+  map.on("zoomend", renderMapMarkers);
 
   document.getElementById("isan-map-reset").addEventListener("click", () => {
     applyFilter("all");

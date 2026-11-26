@@ -7,6 +7,8 @@ const messageForm = document.getElementById("messageForm");
 const messageText = document.getElementById("messageText");
 const messageList = document.getElementById("messageList");
 const messageCount = document.getElementById("messageCount");
+const messageDateFilter = document.getElementById("messageDateFilter");
+const clearMessageDateFilter = document.getElementById("clearMessageDateFilter");
 const submitButton = messageForm.querySelector('button[type="submit"]');
 
 const client = supabaseClient;
@@ -91,7 +93,7 @@ function makeLikeButton(item) {
 
   heart.type = "button";
   heart.disabled = liked;
-  heart.setAttribute("aria-label", `กดหัวใจความคิดเห็นของ ${item.name}`);
+  heart.setAttribute("aria-label", `กดหัวใจข้อความของ ${item.name}`);
   heart.addEventListener("click", async () => {
     if (liked) return;
 
@@ -133,7 +135,7 @@ async function loadMessages() {
       makeElement(
         "p",
         "message-empty",
-        "โหลดความคิดเห็นไม่สำเร็จ กรุณาลองใหม่อีกครั้ง",
+        "โหลดข้อความไม่สำเร็จ กรุณาลองใหม่อีกครั้ง",
       ),
     );
     return;
@@ -152,7 +154,7 @@ async function loadMessages() {
       .order("created_at", { ascending: true });
 
     if (loadCommentsError) {
-      console.error("โหลดคอมเมนต์ไม่สำเร็จ", loadCommentsError);
+      console.error("โหลดข้อความตอบกลับไม่สำเร็จ", loadCommentsError);
       commentsError = loadCommentsError;
     } else {
       comments.forEach((comment) => {
@@ -168,27 +170,35 @@ async function loadMessages() {
   const sortedMessages = [...data].sort(
     (a, b) => Date.parse(b.created_at) - Date.parse(a.created_at),
   );
+  const selectedDate = messageDateFilter.value;
+  const visibleMessages = selectedDate
+    ? sortedMessages.filter(
+        (item) => toLocalDateInputValue(item.created_at) === selectedDate,
+      )
+    : sortedMessages;
 
-  messageCount.textContent = `${sortedMessages.length} ความคิดเห็น`;
+  messageCount.textContent = `${visibleMessages.length} ข้อความ`;
   messageList.replaceChildren();
 
-  if (!sortedMessages.length) {
+  if (!visibleMessages.length) {
     messageList.appendChild(
       makeElement(
         "p",
         "message-empty",
-        "🌷 ยังไม่มีความคิดเห็น มาเริ่มพูดคุยกันได้เลย!",
+        selectedDate
+          ? "ไม่พบข้อความในวันที่เลือก"
+          : "🌷 ยังไม่มีข้อความ ฝากข้อความแรกไว้ได้เลย!",
       ),
     );
     return;
   }
 
-  sortedMessages.forEach((item) => {
+  visibleMessages.forEach((item) => {
     item.message_comments = commentsByMessage.get(item.id) ?? [];
     const note = makeElement("article", "sticky-note");
     note.style.backgroundColor = getStickyColor(item.id);
     const tape = makeElement("div", "sticky-tape");
-    const name = makeElement("p", "sticky-name", "ความคิดเห็นจากผู้ร่วมทริป");
+    const name = makeElement("p", "sticky-name", "ข้อความ");
     const content = makeElement("p", "sticky-text", item.message);
     const footer = makeElement("div", "sticky-footer");
 
@@ -209,6 +219,29 @@ async function loadMessages() {
   });
 }
 
+function toLocalDateInputValue(timestamp) {
+  const date = new Date(timestamp);
+  if (Number.isNaN(date.getTime())) return "";
+
+  const dateParts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Bangkok",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(date);
+  const parts = Object.fromEntries(
+    dateParts.map(({ type, value }) => [type, value]),
+  );
+
+  return `${parts.year}-${parts.month}-${parts.day}`;
+}
+
+messageDateFilter.addEventListener("change", loadMessages);
+clearMessageDateFilter.addEventListener("click", () => {
+  messageDateFilter.value = "";
+  loadMessages();
+});
+
 function makeCommentsSection(item, commentsError) {
   const section = document.createElement("details");
   section.className = "message-comments";
@@ -221,7 +254,7 @@ function makeCommentsSection(item, commentsError) {
     }
   });
   const title = makeElement("summary", "message-comments-title");
-  const label = makeElement("span", "", "คอมเมนต์");
+  const label = makeElement("span", "", "ข้อความตอบกลับ");
   const count = makeElement(
     "span",
     "message-comments-count",
@@ -239,13 +272,13 @@ function makeCommentsSection(item, commentsError) {
         "p",
         "message-comments-empty",
         commentsError.code === "42P01" || commentsError.code === "PGRST205"
-          ? "ระบบคอมเมนต์ยังไม่พร้อมใช้งาน กรุณาแจ้งผู้ดูแลระบบ"
-          : "โหลดคอมเมนต์ไม่สำเร็จ กรุณารีเฟรชหน้า",
+          ? "ระบบข้อความตอบกลับยังไม่พร้อมใช้งาน กรุณาแจ้งผู้ดูแลระบบ"
+          : "โหลดข้อความตอบกลับไม่สำเร็จ กรุณารีเฟรชหน้า",
       ),
     );
   } else if (!comments.length) {
     list.appendChild(
-      makeElement("p", "message-comments-empty", "ยังไม่มีคอมเมนต์"),
+      makeElement("p", "message-comments-empty", "ยังไม่มีข้อความตอบกลับ"),
     );
   } else {
     comments.forEach((comment) => {
@@ -276,8 +309,8 @@ function makeCommentsSection(item, commentsError) {
   input.type = "text";
   input.maxLength = 300;
   input.required = true;
-  input.placeholder = "เขียนคอมเมนต์...";
-  input.setAttribute("aria-label", `เขียนคอมเมนต์บนความคิดเห็น: ${item.message}`);
+  input.placeholder = "ฝากข้อความตอบกลับ...";
+  input.setAttribute("aria-label", `ฝากข้อความตอบกลับ: ${item.message}`);
   const submit = makeElement("button", "message-comment-submit", "ส่ง");
   submit.type = "submit";
   input.disabled = Boolean(commentsError);
@@ -298,14 +331,14 @@ function makeCommentsSection(item, commentsError) {
 
       if (error) {
         console.error(error);
-        alert("ส่งคอมเมนต์ไม่สำเร็จ กรุณาลองใหม่");
+        alert("ส่งข้อความตอบกลับไม่สำเร็จ กรุณาลองใหม่");
         return;
       }
 
       await loadMessages();
     } catch (error) {
       console.error(error);
-      alert("ส่งคอมเมนต์ไม่สำเร็จ กรุณาลองใหม่");
+      alert("ส่งข้อความตอบกลับไม่สำเร็จ กรุณาลองใหม่");
     } finally {
       submit.disabled = false;
     }
@@ -331,7 +364,7 @@ messageForm.addEventListener("submit", async (event) => {
 
     if (error) {
       console.error(error);
-      alert("ส่งความคิดเห็นไม่สำเร็จ กรุณาลองใหม่");
+      alert("ส่งข้อความไม่สำเร็จ กรุณาลองใหม่");
       return;
     }
 
@@ -339,7 +372,7 @@ messageForm.addEventListener("submit", async (event) => {
     await loadMessages();
   } catch (error) {
     console.error(error);
-    alert("ส่งความคิดเห็นไม่สำเร็จ กรุณาลองใหม่");
+    alert("ส่งข้อความไม่สำเร็จ กรุณาลองใหม่");
   } finally {
     submitButton.disabled = false;
   }
@@ -385,7 +418,7 @@ function renderTopLiked(data) {
 
   if (!topThree.length) {
     container.appendChild(
-      makeElement("p", "top-liked-empty", "💌 ยังไม่มีความคิดเห็น"),
+      makeElement("p", "top-liked-empty", "ยังไม่มีข้อความ"),
     );
     return;
   }

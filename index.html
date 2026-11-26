@@ -4,7 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#f4f0e5" />
-    <title>YANG MAI DAI KID SHU TRIP · ISAN</title>
+    <title>อีสานทะลุมิติ</title>
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <link rel="stylesheet" href="./css/main.css" />
     <link
       rel="stylesheet"
@@ -14,7 +15,32 @@
   </head>
   <body>
     <main>
-      <button id="themeToggle" type="button"></button>
+      <div class="page-controls">
+        <button id="themeToggle" type="button"></button>
+        <button
+          id="sectionOrderToggle"
+          class="section-order-toggle"
+          type="button"
+          aria-pressed="false"
+        >
+          จัดเรียงส่วน
+        </button>
+        <button
+          id="sectionOrderReset"
+          class="section-order-reset"
+          type="button"
+          hidden
+        >
+          รีเซ็ตลำดับ
+        </button>
+        <span
+          id="sectionOrderStatus"
+          class="section-order-status"
+          role="status"
+          aria-live="polite"
+          hidden
+        ></span>
+      </div>
 
       <!-- Feedback invitation -->
       <!-- <a href="#messageBoard" class="wish-banner">
@@ -60,10 +86,19 @@
 
       <!-- Trip overview and guide information -->
       <header class="trip-header">
+        <figure class="trip-poster">
+          <img
+            src="./images/isan-tour-poster.jpg"
+            alt="โปสเตอร์ทริปอีสานทะลุมิติ ภาพกลุ่มผู้ร่วมทริปกับบรรยากาศแฟนตาซี"
+            width="768"
+            height="1156"
+            fetchpriority="high"
+          />
+        </figure>
         <div class="trip-header-content">
-          <p class="trip-eyebrow">YANG MAI DAI KID SHU TRIP · ISAN</p>
+          <p class="trip-eyebrow">ทัศนศึกษาครั้งที่ 4 · ISAN FIELD TRIP</p>
 
-          <h1>ทัศนศึกษาครั้งที่ 4</h1>
+          <h1>อีสานทะลุมิติ</h1>
 
           <h2>เส้นทางภาคตะวันออกเฉียงเหนือ เส้นทางที่ 3</h2>
 
@@ -321,7 +356,7 @@
       <section id="isan-map-section" class="isan-map-section">
         <div class="isan-map-header">
           <div>
-            <span class="isan-map-eyebrow">ISAN FIELD TRIP · 2026</span>
+            <span class="isan-map-eyebrow">อีสานทะลุมิติ · 2569</span>
             <h2>แผนที่การเดินทาง</h2>
             <p>สำรวจเส้นทางอารยธรรมอีสานใต้ 3 วัน 2 คืน</p>
           </div>
@@ -344,6 +379,9 @@
           <button type="button" class="isan-day-btn" data-day="1">DAY 1</button>
           <button type="button" class="isan-day-btn" data-day="2">DAY 2</button>
           <button type="button" class="isan-day-btn" data-day="3">DAY 3</button>
+          <button type="button" class="isan-day-btn" data-day="meal">
+            ร้านอาหาร
+          </button>
           <button type="button" class="isan-day-btn" data-day="hospital">
             โรงพยาบาล
           </button>
@@ -353,8 +391,6 @@
           <span
             ><i class="legend-dot dot-attraction"></i> สถานที่ท่องเที่ยว</span
           >
-          <span><i class="legend-dot dot-start"></i> เริ่มต้น</span>
-          <span><i class="legend-dot dot-finish"></i> จุดพัก</span>
           <span><i class="legend-dot dot-meal"></i> อาหาร</span>
           <span><i class="legend-dot dot-hotel"></i> ที่พัก</span>
           <span><i class="legend-dot dot-hospital"></i> โรงพยาบาล</span>
@@ -365,7 +401,7 @@
             <div id="isan-map" aria-label="แผนที่เส้นทางทริปอีสาน"></div>
             <div class="isan-map-caption">
               <span class="isan-map-live-dot"></span>
-              INTERACTIVE ROUTE MAP
+              กดกลุ่มหมุดเพื่อซูมดูจุด
             </div>
           </div>
 
@@ -575,42 +611,47 @@
 
       <!-- Popular messages and message board -->
       <section class="top-liked-section">
-        <h2>ความคิดเห็นยอดนิยม</h2>
-        <p class="top-liked-subtitle">3 ความคิดเห็นที่ได้รับหัวใจมากที่สุด</p>
+        <h2>ข้อความยอดนิยม</h2>
+        <p class="top-liked-subtitle">3 ข้อความที่ได้รับหัวใจมากที่สุด</p>
         <div id="topLikedList" class="top-liked-list"></div>
       </section>
 
       <section class="panel" id="messageBoard">
         <div class="message-board-heading">
           <div>
-            <p class="message-eyebrow">SHARE YOUR THOUGHTS</p>
-            <h2>แสดงความคิดเห็น · พูดคุยทั่วไป</h2>
+            <p class="message-eyebrow">LEAVE A MESSAGE</p>
+            <h2>ฝากข้อความของคุณไว้</h2>
             <p class="message-subtitle">
-              พื้นที่แบ่งปันความคิดเห็น พูดคุยเรื่องทริป หรือทักทายกันได้เลย
+              พื้นที่ฝากข้อความ พูดคุยเรื่องทริป หรือทักทายกันได้เลย
             </p>
           </div>
         </div>
 
         <form id="messageForm" class="message-form">
-          <label for="messageText">ความคิดเห็นของคุณ</label>
+          <label for="messageText">ข้อความของคุณ</label>
           <textarea
             id="messageText"
             maxlength="300"
             rows="3"
-            placeholder="พิมพ์ความคิดเห็น เรื่องที่อยากพูดคุย หรือคำทักทายได้ที่นี่..."
+            placeholder="ฝากข้อความ เรื่องราวเกี่ยวกับทริป หรือคำทักทายไว้ที่นี่..."
             required
           ></textarea>
 
           <div class="message-form-footer">
-            <button type="submit" class="message-submit">💬 ส่งความคิดเห็น</button>
+            <button type="submit" class="message-submit">ส่งข้อความ</button>
           </div>
         </form>
 
         <div class="message-toolbar">
-          <span id="messageCount">0 ความคิดเห็น</span>
+          <span id="messageCount">0 ข้อความ</span>
+          <div class="message-date-filter">
+            <label for="messageDateFilter">กรองตามวันที่</label>
+            <input id="messageDateFilter" type="date">
+            <button id="clearMessageDateFilter" type="button">ล้างวันที่</button>
+          </div>
         </div>
         <div id="messageList" class="message-list">
-          <p class="message-empty">🌷 ยังไม่มีความคิดเห็น มาเริ่มพูดคุยกันได้เลย!</p>
+          <p class="message-empty">ยังไม่มีข้อความ ฝากข้อความแรกไว้ได้เลย!</p>
         </div>
       </section>
 

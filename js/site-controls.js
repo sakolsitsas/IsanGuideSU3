@@ -40,6 +40,261 @@ if (themeToggle) {
   });
 }
 
+const sectionOrderToggle = document.getElementById("sectionOrderToggle");
+const sectionOrderReset = document.getElementById("sectionOrderReset");
+const sectionOrderStatus = document.getElementById("sectionOrderStatus");
+const mainContent = document.querySelector("main");
+const sectionOrderStorageKey = "isan-guide-section-order";
+const reorderableSectionDefinitions = [
+  ["countdown", ".countdown-panel"],
+  ["trip-overview", ".trip-header"],
+  ["itinerary", "#itineraryPanel"],
+  ["map", "#isan-map-section"],
+  ["weather", ".trip-weather"],
+  ["top-messages", ".top-liked-section"],
+  ["message-board", "#messageBoard"],
+];
+const reorderableSections = reorderableSectionDefinitions
+  .map(([key, selector]) => {
+    const section = document.querySelector(selector);
+    if (!section) return null;
+
+    section.dataset.sectionOrderKey = key;
+    return section;
+  })
+  .filter(Boolean);
+
+function getSectionOrder() {
+  try {
+    const storedOrder = window.localStorage.getItem(sectionOrderStorageKey);
+    if (!storedOrder) return [];
+
+    const parsedOrder = JSON.parse(storedOrder);
+    if (!Array.isArray(parsedOrder)) {
+      throw new TypeError("Saved section order must be an array");
+    }
+
+    return parsedOrder.filter(
+      (key, index) =>
+        reorderableSectionDefinitions.some(([sectionKey]) => sectionKey === key) &&
+        parsedOrder.indexOf(key) === index,
+    );
+  } catch (error) {
+    console.error("โหลดลำดับ Section ที่บันทึกไว้ไม่สำเร็จ", error);
+    if (sectionOrderStatus) {
+      sectionOrderStatus.textContent = "โหลดลำดับที่บันทึกไว้ไม่สำเร็จ";
+      sectionOrderStatus.hidden = false;
+    }
+    return [];
+  }
+}
+
+function saveSectionOrder() {
+  const order = reorderableSections.map(
+    (section) => section.dataset.sectionOrderKey,
+  );
+
+  try {
+    window.localStorage.setItem(sectionOrderStorageKey, JSON.stringify(order));
+    if (sectionOrderStatus) {
+      sectionOrderStatus.textContent = "บันทึกลำดับส่วนนี้ไว้ในเครื่องแล้ว";
+    }
+  } catch (error) {
+    console.error("บันทึกลำดับ Section ไม่สำเร็จ", error);
+    if (sectionOrderStatus) {
+      sectionOrderStatus.textContent =
+        "บันทึกลำดับไม่สำเร็จ เบราว์เซอร์อาจไม่อนุญาตให้ใช้พื้นที่จัดเก็บ";
+    }
+  }
+}
+
+function updateSectionMoveButtons() {
+  reorderableSections.forEach((section, index) => {
+    const upButton = section.querySelector(".section-order-up");
+    const downButton = section.querySelector(".section-order-down");
+    upButton.disabled = index === 0;
+    downButton.disabled = index === reorderableSections.length - 1;
+    upButton.setAttribute("aria-label", `ย้าย ${getSectionLabel(section)} ขึ้น`);
+    downButton.setAttribute(
+      "aria-label",
+      `ย้าย ${getSectionLabel(section)} ลง`,
+    );
+  });
+}
+
+function syncSectionOrderFromDOM() {
+  const sectionsInDOMOrder = [...mainContent.children].filter((child) =>
+    reorderableSections.includes(child),
+  );
+  reorderableSections.splice(
+    0,
+    reorderableSections.length,
+    ...sectionsInDOMOrder,
+  );
+}
+
+function getSectionLabel(section) {
+  const heading = section.querySelector("h1, h2, h3");
+  return heading?.textContent.trim() || section.dataset.sectionOrderKey;
+}
+
+function moveSection(section, direction) {
+  const index = reorderableSections.indexOf(section);
+  const targetIndex = index + direction;
+  if (targetIndex < 0 || targetIndex >= reorderableSections.length) return;
+
+  const target = reorderableSections[targetIndex];
+  if (direction < 0) {
+    mainContent.insertBefore(section, target);
+  } else {
+    mainContent.insertBefore(target, section);
+  }
+
+  reorderableSections.splice(index, 1);
+  reorderableSections.splice(targetIndex, 0, section);
+  updateSectionMoveButtons();
+  saveSectionOrder();
+}
+
+function resetSectionOrder() {
+  try {
+    window.localStorage.removeItem(sectionOrderStorageKey);
+  } catch (error) {
+    console.error("รีเซ็ตลำดับ Section ไม่สำเร็จ", error);
+    sectionOrderStatus.textContent =
+      "รีเซ็ตไม่สำเร็จ เบราว์เซอร์อาจไม่อนุญาตให้ใช้พื้นที่จัดเก็บ";
+    return;
+  }
+
+  const defaultOrder = reorderableSectionDefinitions
+    .map(([key]) =>
+      reorderableSections.find((section) => section.dataset.sectionOrderKey === key),
+    )
+    .filter(Boolean);
+  const siteStatsFooter = mainContent.querySelector(".site-stats");
+
+  defaultOrder.forEach((section) =>
+    mainContent.insertBefore(section, siteStatsFooter),
+  );
+  reorderableSections.splice(0, reorderableSections.length, ...defaultOrder);
+  updateSectionMoveButtons();
+  sectionOrderStatus.textContent = "เรียง Section กลับเป็นลำดับเริ่มต้นแล้ว";
+}
+
+function addSectionOrderControls(section) {
+  const controls = document.createElement("div");
+  controls.className = "section-order-controls";
+
+  const dragHandle = document.createElement("button");
+  dragHandle.type = "button";
+  dragHandle.className = "section-order-drag";
+  dragHandle.draggable = true;
+  dragHandle.textContent = "↕ ลาก";
+  dragHandle.setAttribute(
+    "aria-label",
+    `ลากเพื่อย้าย ${getSectionLabel(section)}`,
+  );
+
+  const upButton = document.createElement("button");
+  upButton.type = "button";
+  upButton.className = "section-order-up";
+  upButton.textContent = "↑";
+  upButton.addEventListener("click", () => moveSection(section, -1));
+
+  const downButton = document.createElement("button");
+  downButton.type = "button";
+  downButton.className = "section-order-down";
+  downButton.textContent = "↓";
+  downButton.addEventListener("click", () => moveSection(section, 1));
+
+  controls.append(dragHandle, upButton, downButton);
+  section.prepend(controls);
+
+  dragHandle.addEventListener("dragstart", (event) => {
+    event.dataTransfer.effectAllowed = "move";
+    event.dataTransfer.setData("text/plain", section.dataset.sectionOrderKey);
+    section.classList.add("section-order-dragging");
+  });
+
+  dragHandle.addEventListener("dragend", () => {
+    section.classList.remove("section-order-dragging");
+    reorderableSections.forEach((item) =>
+      item.classList.remove("section-order-target"),
+    );
+    syncSectionOrderFromDOM();
+    updateSectionMoveButtons();
+    saveSectionOrder();
+  });
+
+  section.addEventListener("dragover", (event) => {
+    const draggedSection = mainContent.querySelector(
+      ".section-order-dragging",
+    )?.closest("[data-section-order-key]");
+    if (!draggedSection || draggedSection === section) return;
+
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "move";
+    const { top, height } = section.getBoundingClientRect();
+    const insertAfter = event.clientY > top + height / 2;
+    mainContent.insertBefore(
+      draggedSection,
+      insertAfter ? section.nextElementSibling : section,
+    );
+    section.classList.add("section-order-target");
+  });
+
+  section.addEventListener("dragleave", (event) => {
+    if (!section.contains(event.relatedTarget)) {
+      section.classList.remove("section-order-target");
+    }
+  });
+}
+
+if (mainContent && sectionOrderToggle && sectionOrderStatus) {
+  const storedOrder = getSectionOrder();
+  const orderedSections = [
+    ...storedOrder
+      .map((key) =>
+        reorderableSections.find(
+          (section) => section.dataset.sectionOrderKey === key,
+        ),
+      )
+      .filter(Boolean),
+    ...reorderableSections.filter(
+      (section) =>
+        !storedOrder.includes(section.dataset.sectionOrderKey),
+    ),
+  ];
+
+  const siteStatsFooter = mainContent.querySelector(".site-stats");
+  orderedSections.forEach((section) =>
+    mainContent.insertBefore(section, siteStatsFooter),
+  );
+  reorderableSections.splice(0, reorderableSections.length, ...orderedSections);
+  reorderableSections.forEach(addSectionOrderControls);
+  updateSectionMoveButtons();
+
+  sectionOrderToggle.addEventListener("click", () => {
+    const isReordering =
+      sectionOrderToggle.getAttribute("aria-pressed") === "true";
+    const enableReordering = !isReordering;
+    mainContent.classList.toggle("is-reordering-sections", enableReordering);
+    sectionOrderToggle.setAttribute("aria-pressed", String(enableReordering));
+    sectionOrderToggle.textContent = enableReordering
+      ? "เสร็จสิ้น"
+      : "จัดเรียงส่วน";
+    sectionOrderStatus.hidden = !enableReordering;
+    sectionOrderStatus.textContent = enableReordering
+      ? "ใช้ปุ่มขึ้น/ลง หรือกดค้างที่ “ลาก” เพื่อย้ายส่วน"
+      : "";
+    if (sectionOrderReset) {
+      sectionOrderReset.hidden = !enableReordering;
+    }
+  });
+
+  sectionOrderReset?.addEventListener("click", resetSectionOrder);
+}
+
 const itineraryToggle = document.getElementById("itineraryToggle");
 const itineraryContent = document.getElementById("itineraryContent");
 

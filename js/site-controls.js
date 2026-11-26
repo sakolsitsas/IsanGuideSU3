@@ -40,6 +40,13 @@ if (themeToggle) {
   });
 }
 
+const countdownPanel = document.querySelector(".countdown-panel");
+const countdownDismiss = countdownPanel?.querySelector(".countdown-dismiss");
+
+countdownDismiss?.addEventListener("click", () => {
+  countdownPanel.hidden = true;
+});
+
 const sectionOrderToggle = document.getElementById("sectionOrderToggle");
 const sectionOrderReset = document.getElementById("sectionOrderReset");
 const sectionOrderStatus = document.getElementById("sectionOrderStatus");

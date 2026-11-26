@@ -1190,6 +1190,7 @@ button:focus-visible {
 }
 
 .countdown-panel {
+  position: relative;
   padding: 30px 18px;
   margin: 24px 0;
   text-align: center;
@@ -1198,6 +1199,30 @@ button:focus-visible {
   border: 1px solid var(--line);
   border-radius: 22px;
   box-shadow: var(--shadow);
+}
+
+.countdown-dismiss {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  padding: 0;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  font: inherit;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.countdown-dismiss:hover {
+  color: var(--ink);
+  background: var(--soft);
 }
 
 .countdown-label {
@@ -1641,6 +1666,23 @@ button:focus-visible {
 
 .author-toggle:hover {
   background: var(--soft);
+}
+
+.author-team-photo {
+  grid-column: 1 / -1;
+  overflow: hidden;
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--soft);
+  box-shadow: var(--shadow);
+  line-height: 0;
+}
+
+.author-team-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 #authorContent {
